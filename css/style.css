@@ -17,7 +17,7 @@ body{
 	height:60px;
 	font-family:arial;
 	border-radius: 30px;
-	text-indent: 50px;
+	text-align: center;
 }
 
 .trash{
@@ -90,7 +90,7 @@ body{
 	height:70px;
 	left:280px;
 	font-family:arial;
-	text-indent: 100px;
+	text-align: center;
 	border-radius: 30px;
 }
 

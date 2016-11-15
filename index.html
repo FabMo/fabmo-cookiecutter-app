@@ -52,11 +52,9 @@
 	<li id="6" data-id="6" value="6">part6</li>
 </div>
 
-
 <div id="job-icons">
 	<input class="trash" type="image" id="trash0" src="css/trash.png" onclick="removeJob(this.id)"/>
 </div>
-
 
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick=""/>
@@ -64,13 +62,20 @@
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
 
-
-
 </body>
 
 <script>
 
 //TODO
+//
+//cleanup
+//unique job list id
+//fix select text
+//configure history list
+//create list
+//save to the tool
+//configure add & settings buttons (list/job name, color)
+//
 
 var fabmo = new FabMoDashboard()
 
@@ -90,7 +95,7 @@ var jobHistory = document.getElementById("recent-jobs")
 
 var sortable2 = new Sortable(jobHistory, {
 
-	group: {name:"group1", pull: [true], put: [false] },
+	group: {name:"group1", pull: ['clone'], put: [false] },
 	sort: false,
 	animation: 250,
 	onUpdate: function (e) {
@@ -99,6 +104,7 @@ var sortable2 = new Sortable(jobHistory, {
 	},
 	onSort: function (e) {
 		//console.log(e)
+		//console.log('2:')
 		//console.log(sortable2.toArray())
 	}
 
@@ -108,21 +114,22 @@ var sortable = new Sortable(list, {
 	group:"group1",
 	sort:true,
 	animation: 250,
-	onEnd: function (e) {
+	onEnd: function(e){
 		//console.log(e)
 		//console.log(e.oldIndex)
 		//console.log(e.newIndex)  
 	},
-	onAdd: function (e) {
+	onAdd: function(e){
 		//var itemEl = e.item;  // dragged HTMLElement
 		//e.from;  // previous list
 		// + indexes from onEnd
-		//console.log(e.item)
+		console.log(e.item)
 	},
-	onSort: function (e) {
+	onSort: function(e){
 		//console.log(e)
 		jobOrder=sortable.toArray()
 		//console.log(jobOrder)
+
 		for(i=0;i<jobOrder.length;i++){
 			if(jobOrder[i]=='default'){
 				document.getElementById("default").remove()
@@ -130,18 +137,19 @@ var sortable = new Sortable(list, {
 				document.getElementById("play").style.display="block"			
 			}
 		}
+		console.log(jobOrder)
+		sortable.sort(jobOrder)
 		$("#job-icons").empty()
 		//document.getElementById(jobOrder[0]).style.background = "#ffff55"
 		for(i=0;i<jobOrder.length;i++){
-			
-				$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-				document.getElementById("trash"+jobOrder[i]).style.top = i*70 + 105 + "px"
 
-				$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" src=\"css/gear.png\" onclick=\"\"\/\>")
-				document.getElementById("gear"+jobOrder[i]).style.top = i*70 + 105 + "px"
-			
+			var top = i*70+105
+			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
+			$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/gear.png\" onclick=\"\"\/\>")
+
 		}
-		console.log(jobOrder)
+		//console.log('1:')
+		
 	}
 
 })
@@ -172,8 +180,6 @@ if(fabmo.isPresent()==true){
 		else{
 			console.log("no jobs in history")
 		}
-
-
 	})
 
 }
@@ -191,16 +197,17 @@ function removeJob(id){
 
 	var remove = id.replace("trash", "")
 
-	document.getElementById(remove).remove();
+	//document.getElementById(remove).remove();
+
+	$("#my-ui-list").children("#" + remove).remove()
+
 	$("#job-icons").empty()
 	jobOrder=sortable.toArray()
 
 	for(i=0;i<jobOrder.length;i++){
-		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-		document.getElementById("trash"+jobOrder[i]).style.top = i*70 + 105 + "px"
-
-		$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" src=\"css/gear.png\" onclick=\"\"\/\>")
-		document.getElementById("gear"+jobOrder[i]).style.top = i*70 + 105 + "px"
+		var top = i*70+105
+		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
+		$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/gear.png\" onclick=\"\"\/\>")
 	}
 	if(jobOrder.length==0){
 		defaultDisplay()
@@ -228,7 +235,7 @@ function next(){
 
 function make(){
 
-	console.log(jobOrder[0])
+	//console.log(jobOrder[0])
 	//console.log(jobOrder)
 
 	//fabmo.runGCode("g0x0\n")
