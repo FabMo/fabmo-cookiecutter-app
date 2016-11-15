@@ -1,0 +1,10 @@
+{
+	"name":"Cookie Cutter",
+	"main":"./index.html",
+	"icon":"icon.png",
+	"icon_color":"white",
+	"version":"0.0.1",
+	"author":"Brian Owen, Ryan Sturmer, Jonathan Ward",
+	"website":"http://github.com/FabMo/cookieCutter",
+	"description":" "
+}
