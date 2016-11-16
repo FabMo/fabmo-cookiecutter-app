@@ -198,13 +198,11 @@ function next(){
 		else{
 			var Next = false
 		}
-		fabmo.getJobHistory({start:(historyIndex),count:(historyIndex+5)},function(err, myHistory) {
+		fabmo.getJobHistory({start:(historyIndex),count:5},function(err, myHistory) {
 			fabmoHistory = myHistory
 			$("#recent-jobs").children("li").remove()
 			document.getElementById("link").remove()
-			if(Next==true){
-				fabmoHistory.data.pop()
-			}
+			
 			console.log(fabmoHistory)
 
 			for(i=0;i<fabmoHistory.data.length;i++){
@@ -235,13 +233,11 @@ function prev(){
 		else{
 			var Prev = false
 		}
-		fabmo.getJobHistory({start:(historyIndex),count:(historyIndex+5)},function(err, myHistory) {
+		fabmo.getJobHistory({start:(historyIndex),count:5},function(err, myHistory) {
 			fabmoHistory = myHistory
 			$("#recent-jobs").children("li").remove()
 			document.getElementById("link").remove()
-			if((Next==true)&&(Prev==true)){
-				fabmoHistory.data.pop()
-			}
+			
 			console.log(fabmoHistory)
 			for(i=0;i<fabmoHistory.data.length;i++){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
