@@ -14,7 +14,7 @@ body{
 	/*overflow: hidden;*/
 	left:10px;
 	width:250px;
-	height:60px;
+	height:70px;
 	font-family:arial;
 	border-radius: 30px;
 	text-align: center;
@@ -23,10 +23,17 @@ body{
 .trash{
 	position:absolute;
 	left:300px;
-	top:105px;
+	top:100px;
 	height:28px;
 	width:28px;
+	border-radius: 16px;
+	padding: 6px;
 }
+
+.trash:hover{
+	background: #ee5555 !important;	
+}
+
 
 .gear{
 	position:absolute;
@@ -37,7 +44,7 @@ body{
 }
 
 #link{
-	display:none;
+	/*display:none;*/
 }
 
 #new{
@@ -66,7 +73,7 @@ body{
 }
 
 #recent-jobs{
-	background:#ccc;
+	background:#eee;
 	position:fixed;
 	top:80px;
 	width:250px;
@@ -111,11 +118,16 @@ li{
 	vertical-align: middle;
 	line-height: 30px;
 	list-style-type: none;
-	background: #5555ff;
+	background: #8888ff;
 	border-radius: 30px;
 	padding:15px;
 	margin:10px;	
 }
+
+li:hover{
+	background: #55ff55 !important;	
+}
+
 
 .recent{
 	text-align: center;
