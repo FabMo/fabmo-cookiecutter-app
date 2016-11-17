@@ -22,8 +22,8 @@
 </select>
 
 <select id="addJob" autocomplete="off">
-	<option value="add" selected disabled>+ Add Job</option>
 	<!--
+	<option value="add" selected disabled>+ Add Job</option>
 	<option value="computer" selected>Computer</option>
 	-->
 	<option value="history" selected>History</option>
@@ -78,7 +78,7 @@
 
 var fabmo = new FabMoDashboard()
 var fabmoHistory = []
-var historyCount = 0
+var historyTotal = 0
 var historyIndex = 0
 var jobOrder = [0,1,2,3,4,5,6] 
 var recentOrder = ['r0','r1','r2','r3','r4']
@@ -310,7 +310,6 @@ function make(){
 	var makeId = jobOrder[0].substring(7)
 
 	fabmo.resubmitJob(makeId)
-
 
 	jobOrder.push(jobOrder[0])
 	jobOrder.splice(0,1)
