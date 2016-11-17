@@ -60,7 +60,7 @@
 
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
-	<input type="image" id="gear" src="css/gear.png" onclick=""/>
+	<input type="image" id="gear" src="css/trash.png" onclick="deleteAll()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
 
@@ -211,6 +211,9 @@ function getHistory(){
 				$("#job-icons").append(myConfig.list[myConfig.list.length-1].icons)
 				jobOrder = myConfig.list[myConfig.list.length-1].order
 				config=myConfig
+				if(jobOrder[0]=='default'){
+					document.getElementById("play").style.display="none"
+				}
 			}
 			else{
 				defaultDisplay()
@@ -311,6 +314,27 @@ function removeJob(id){
 		defaultDisplay()
 	}
 
+	save()
+
+}
+
+function deleteAll(){
+	$("#job-group").empty()
+	$("#my-ui-list").empty()
+	$("#job-icons").empty()
+	$("#job-group").append("<option id=\"group1\" value=\"group1\">Group 1</option>")
+	//($("#job-group option:selected").val())='group1'
+	defaultDisplay()
+	config= {list:[
+		{id:'group1',
+		name:'Group 1',
+		jobs:($("#my-ui-list").html()),
+		icons:($("#job-icons").html()),
+		order:(jobOrder)}
+	]}
+	
+	
+	save()
 }
 
 function defaultDisplay(){
