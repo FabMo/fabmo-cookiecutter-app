@@ -89,6 +89,7 @@ var sortable2 = new Sortable(jobHistory, {
 	group: {name:"group1", pull: ['clone'], put: [false] },
 	sort: false,
 	animation: 250,
+	dataIdAttr: 'id',
 	onUpdate: function (e) {
 		//console.log(e)
 		//console.log(sortable2.toArray())
@@ -97,6 +98,10 @@ var sortable2 = new Sortable(jobHistory, {
 		//console.log(e)
 		//console.log('2:')
 		//console.log(sortable2.toArray())
+	},
+	onClone: function (e) {
+		console.log(e.item.id)
+		e.item.id = ((Math.random()).toFixed(6)).replace('.','')+e.item.id
 	}
 
 })
@@ -105,6 +110,7 @@ var sortable = new Sortable(list, {
 	group:"group1",
 	sort:true,
 	animation: 250,
+	dataIdAttr: 'id',
 	onEnd: function(e){
 		//console.log(e)
 		//console.log(e.oldIndex)
@@ -118,8 +124,9 @@ var sortable = new Sortable(list, {
 	},
 	onSort: function(e){
 		//console.log(e)
-		//console.log(jobOrder)
+		
 		jobOrder=sortable.toArray()
+		console.log(jobOrder)
 
 		for(i=0;i<jobOrder.length;i++){
 			if(jobOrder[i]=='default'){
@@ -261,7 +268,7 @@ function removeJob(id){
 
 	var remove = id.replace("trash", "")
 
-	//document.getElementById(remove).remove();
+	console.log(remove)
 
 	$("#my-ui-list").children("#" + remove).remove()
 
@@ -300,11 +307,17 @@ function make(){
 
 	//fabmo.runGCode("g0x0")
 
-	fabmo.resubmitJob(jobOrder[0])
+	var makeId = jobOrder[0].substring(7)
+
+	fabmo.resubmitJob(makeId)
+
 
 	jobOrder.push(jobOrder[0])
-	jobOrder.splice(0,1)	
+	jobOrder.splice(0,1)
 	sortable.sort(jobOrder)
+	colorUpdate()
+
+	console.log(jobOrder)
 }
 
 function newGroup(){
