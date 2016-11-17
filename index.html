@@ -15,7 +15,7 @@
 <body onload="">
 
 <select id="job-group">
-	<option id="group1">Group 1</option>
+	<option id="group1" value="1">Group 1</option>
 	<!--
 	<option id="group2">Group 2</option>
 	-->
@@ -59,7 +59,7 @@
 </div>
 
 <div id="icons">
-	<input type="image" id="new" src="css/new.png" onclick=""/>
+	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
 	<input type="image" id="gear" src="css/gear.png" onclick=""/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
@@ -305,6 +305,17 @@ function make(){
 	jobOrder.push(jobOrder[0])
 	jobOrder.splice(0,1)	
 	sortable.sort(jobOrder)
+}
+
+function newGroup(){
+	makeGroup = (parseInt($("#job-group").children(":last").val()))+1
+	console.log(makeGroup)
+	//makeGroup = document.getElementById('group' + id).value++
+	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"" + makeGroup + "\">Group " + makeGroup + " </option>")
+	$("#job-group").val(makeGroup)
+	$("#my-ui-list").empty()
+	$("#job-icons").empty()
+	defaultDisplay()
 }
 
 //
