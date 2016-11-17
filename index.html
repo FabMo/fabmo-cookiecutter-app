@@ -77,7 +77,13 @@
 //
 
 var fabmo = new FabMoDashboard()
-var config = {list:[]}
+var config = {list:[
+	{id:($("#job-group option:selected").val()),
+	name:($("#job-group option:selected").text()),
+	jobs:($("#my-ui-list").html()),
+	icons:($("#job-icons").html()),
+	order:(jobOrder)}
+]}
 var fabmoHistory = []
 var historyTotal = 0
 var historyIndex = 0
@@ -146,7 +152,8 @@ var sortable = new Sortable(list, {
 			var top = i*70+100
 			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
 			$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/gear.png\" onclick=\"\"\/\>")
-		}	
+		}
+	save()	
 	}
 
 })
@@ -336,19 +343,17 @@ function make(){
 	sortable.sort(jobOrder)
 	colorUpdate()
 
-	console.log(jobOrder)
+	//console.log(jobOrder)
 }
 
 $("#job-group").on('change', function() {
 	
-	console.log(config)
-	console.log($("#job-group option:selected").val())
+	//console.log(config)
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 
 	for(i=0;i<config.list.length;i++){
 		if((config.list[i].id)==($("#job-group option:selected").val())){
-			console.log("append")
 			$("#my-ui-list").append(config.list[i].jobs)
 			$("#job-icons").append(config.list[i].icons)
 			jobOrder = config.list[i].order
@@ -360,7 +365,35 @@ $("#job-group").on('change', function() {
 
 })
 
+function save(){
+
+id=($("#job-group option:selected").val())
+
+for(i=0;i<config.list.length;i++){
+	if(id==config.list[i].id){
+		config.list[i].jobs = ($("#my-ui-list").html())
+		config.list[i].icons = ($("#job-icons").html())
+		config.list[i].order = (jobOrder)
+	}
+}
+
+
+fabmo.setAppConfig(config)
+
+
+}
+
 function newGroup(){
+
+	var makeGroup = (($('#job-group').children('option').length)+1)
+	//console.log(config)
+	
+	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"group" + makeGroup + "\">Group " + makeGroup + " </option>")
+	$("#job-group").val("group"+makeGroup)
+
+	$("#my-ui-list").empty()
+	$("#job-icons").empty()
+	defaultDisplay()
 
 	config.list.push({
 		id:($("#job-group option:selected").val()),
@@ -369,15 +402,6 @@ function newGroup(){
 		icons:($("#job-icons").html()),
 		order:(jobOrder)
 	})
-
-	makeGroup = (config.list.length+1)
-	console.log(makeGroup)
-	
-	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"group" + makeGroup + "\">Group " + makeGroup + " </option>")
-	$("#job-group").val("group"+makeGroup)
-	$("#my-ui-list").empty()
-	$("#job-icons").empty()
-	defaultDisplay()
 
 	if(fabmo.isPresent()==true){
 		fabmo.setAppConfig(config)
