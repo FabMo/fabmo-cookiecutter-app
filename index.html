@@ -367,7 +367,7 @@ function make(){
 	sortable.sort(jobOrder)
 	colorUpdate()
 
-	//console.log(jobOrder)
+	save()
 }
 
 $("#job-group").on('change', function() {
@@ -430,9 +430,6 @@ function newGroup(){
 	if(fabmo.isPresent()==true){
 		fabmo.setAppConfig(config)
 	}
-
-	//console.log(config)
-	//save config function	
 
 }
 
