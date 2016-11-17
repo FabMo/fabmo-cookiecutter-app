@@ -15,7 +15,7 @@
 <body onload="">
 
 <select id="job-group">
-	<option id="group1" value="1">Group 1</option>
+	<option id="group1" value="group1">Group 1</option>
 	<!--
 	<option id="group2">Group 2</option>
 	-->
@@ -33,25 +33,25 @@
 </select>
 
 <div id="recent-jobs">
-	<li id="r0" data-id="r0" value="r0">partX</li>
-	<li id="r1" data-id="r1" value="r1">partY</li>
-	<li id="r2" data-id="r2" value="r2">partZ</li>
-	<li id="r3" data-id="r3" value="r3">partA</li>
-	<li id="r4" data-id="r4" value="r4">partB</li>	
-	<p id="link" value="0">1 - 5 <a href="#" onclick="next()">next</a>
+	<li id="r0">partX</li>
+	<li id="r1">partY</li>
+	<li id="r2">partZ</li>
+	<li id="r3">partA</li>
+	<li id="r4">partB</li>	
+	<p id="link">1 - 5 <a href="#" onclick="next()">next</a>
 </div>
 
 <div id="my-ui-list">
 	<!--
 	<li id="default" data-id="default" value="default">drag and drop here</li>
 	-->
-	<li id="0" data-id="0" value="0">part0</li>
-	<li id="1" data-id="1" value="1">part1</li>
-	<li id="2" data-id="2" value="2">part2</li>
-	<li id="3" data-id="3" value="3">part3</li>
-	<li id="4" data-id="4" value="4">part4</li>
-	<li id="5" data-id="5" value="5">part5</li>
-	<li id="6" data-id="6" value="6">part6</li>
+	<li id="0">part0</li>
+	<li id="1">part1</li>
+	<li id="2">part2</li>
+	<li id="3">part3</li>
+	<li id="4">part4</li>
+	<li id="5">part5</li>
+	<li id="6">part6</li>
 </div>
 
 <div id="job-icons">
@@ -77,6 +77,7 @@
 //
 
 var fabmo = new FabMoDashboard()
+var config = {list:[]}
 var fabmoHistory = []
 var historyTotal = 0
 var historyIndex = 0
@@ -155,7 +156,7 @@ function getHistory(){
 	if(fabmo.isPresent()==true){
 
 		$("#my-ui-list").empty()
-		defaultDisplay()
+		$("#job-icons").empty()
 	
 		for(i=0;i<recentOrder.length;i++){
 			document.getElementById(recentOrder[i]).remove();
@@ -190,6 +191,24 @@ function getHistory(){
 			else{
 				console.log("no jobs in history")
 			}
+		})
+
+		fabmo.getAppConfig(function(err, myConfig) {
+			if(myConfig.list!=undefined){
+				$("#job-group").empty()
+				for(i=0;i<myConfig.list.length;i++){
+					$("#job-group").append("<option id=\"" + myConfig.list[i].id + "\"value=\""+myConfig.list[i].id+"\">"+myConfig.list[i].name+"</option>")
+				}
+				$("#job-group").val(myConfig.list[myConfig.list.length-1].id)
+				$("#my-ui-list").append(myConfig.list[myConfig.list.length-1].jobs)
+				$("#job-icons").append(myConfig.list[myConfig.list.length-1].icons)
+				jobOrder = myConfig.list[myConfig.list.length-1].order
+				config=myConfig
+			}
+			else{
+				defaultDisplay()
+			}
+						
 		})
 
 	}
@@ -297,7 +316,8 @@ function defaultDisplay(){
 
 function colorUpdate(){
 
-	$("#my-ui-list").children("*").css('background','#7777ff')
+	$("li").css('background','#7777ff')
+	$("#my-ui-list").children("*").css('background','#5555ff')
 	$("#my-ui-list").children(":first").css('background','#eeee55')
 
 }
@@ -319,15 +339,53 @@ function make(){
 	console.log(jobOrder)
 }
 
+$("#job-group").on('change', function() {
+	
+	console.log(config)
+	console.log($("#job-group option:selected").val())
+	$("#my-ui-list").empty()
+	$("#job-icons").empty()
+
+	for(i=0;i<config.list.length;i++){
+		if((config.list[i].id)==($("#job-group option:selected").val())){
+			console.log("append")
+			$("#my-ui-list").append(config.list[i].jobs)
+			$("#job-icons").append(config.list[i].icons)
+			jobOrder = config.list[i].order
+		}
+	}
+	//$("#my-ui-list").append(myConfig.list[i].jobs)
+	//$("#job-icons").append(myConfig.list[i].icons)
+	//jobOrder = myConfig.list[i].order
+
+})
+
 function newGroup(){
-	makeGroup = (parseInt($("#job-group").children(":last").val()))+1
+
+	config.list.push({
+		id:($("#job-group option:selected").val()),
+		name:($("#job-group option:selected").text()),
+		jobs:($("#my-ui-list").html()),
+		icons:($("#job-icons").html()),
+		order:(jobOrder)
+	})
+
+	makeGroup = (config.list.length+1)
 	console.log(makeGroup)
-	//makeGroup = document.getElementById('group' + id).value++
-	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"" + makeGroup + "\">Group " + makeGroup + " </option>")
-	$("#job-group").val(makeGroup)
+	
+	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"group" + makeGroup + "\">Group " + makeGroup + " </option>")
+	$("#job-group").val("group"+makeGroup)
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 	defaultDisplay()
+
+	if(fabmo.isPresent()==true){
+		fabmo.setAppConfig(config)
+	}
+
+	//console.log(config)
+	//save config function	
+
 }
 
 //
