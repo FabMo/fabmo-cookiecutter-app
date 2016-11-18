@@ -122,20 +122,12 @@ select{
 	text-align-last:center; 
 }
 
-.sortable-ghost{
-	color:#000;
-	background:#55ff55;
-}
-
 /*
-.sortable-chosen{
-	background:#ff00ff;
-}
-
-.my-handle{
+.sortable-ghost{
 	background:#ff00ff;
 }
 */
+
 
 #my-ui-list{
 	position:absolute;
@@ -158,14 +150,12 @@ li{
 	background: #8888ff;
 	border-radius: 30px;
 	padding:15px;
-	margin:10px;
-	background-clip: content;	
+	margin:10px;	
 }
 
-li:hover{
-	background: #55ff55 !important;	
+.sortable-ghost{
+	background: #55ff55 !important;
 }
-
 
 .recent{
 	text-align: center;
@@ -177,8 +167,7 @@ li:hover{
 	border-radius: 30px;
 	padding:15px;
 	margin:10px;
-	margin:10px;
-	background-clip: content;	
+	margin:10px;	
 }
 
 

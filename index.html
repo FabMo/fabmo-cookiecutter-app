@@ -60,7 +60,7 @@
 
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
-	<input type="image" id="gear" src="css/trash.png" onclick="deleteAll()"/>
+	<input type="image" id="gear" src="css/trash.png" onclick="deleteGroup()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
 
@@ -72,12 +72,11 @@
 //
 //cleanup
 //unique job list id
-//save list
 //settings
 //
 
 var fabmo = new FabMoDashboard()
-var config = {list:[
+var config = {selected:'group1', list:[
 	{id:($("#job-group option:selected").val()),
 	name:($("#job-group option:selected").text()),
 	jobs:($("#my-ui-list").html()),
@@ -182,7 +181,7 @@ function getHistory(){
 				else{
 					var Next =false
 				}
-				console.log(historyTotal)
+				//console.log(historyTotal)
 				for(i=0;i<fabmoHistory.data.length;i++){
 					$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 				}
@@ -205,11 +204,13 @@ function getHistory(){
 				$("#job-group").empty()
 				for(i=0;i<myConfig.list.length;i++){
 					$("#job-group").append("<option id=\"" + myConfig.list[i].id + "\"value=\""+myConfig.list[i].id+"\">"+myConfig.list[i].name+"</option>")
+					if(myConfig.selected == myConfig.list[i].id){
+						$("#job-group").val(myConfig.list[i].id)
+						$("#my-ui-list").append(myConfig.list[i].jobs)
+						$("#job-icons").append(myConfig.list[i].icons)
+						jobOrder = myConfig.list[i].order
+					}
 				}
-				$("#job-group").val(myConfig.list[myConfig.list.length-1].id)
-				$("#my-ui-list").append(myConfig.list[myConfig.list.length-1].jobs)
-				$("#job-icons").append(myConfig.list[myConfig.list.length-1].icons)
-				jobOrder = myConfig.list[myConfig.list.length-1].order
 				config=myConfig
 				if(jobOrder[0]=='default'){
 					document.getElementById("play").style.display="none"
@@ -218,6 +219,7 @@ function getHistory(){
 			else{
 				defaultDisplay()
 			}
+			console.log(config)
 						
 		})
 
@@ -329,12 +331,13 @@ function removeJob(id){
 }
 
 //TODO
+//
 //rename job
 //rename group
 //
 
 function deleteGroup(){
-//define selected group
+
 
 }
 
@@ -345,7 +348,7 @@ function deleteAll(){
 	$("#job-group").append("<option id=\"group1\" value=\"group1\">Group 1</option>")
 	//($("#job-group option:selected").val())='group1'
 	defaultDisplay()
-	config= {list:[
+	config= {selected:'group1', list:[
 		{id:'group1',
 		name:'Group 1',
 		jobs:($("#my-ui-list").html()),
@@ -396,6 +399,8 @@ $("#job-group").on('change', function() {
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 
+	config.selected = $("#job-group option:selected").val()
+
 	for(i=0;i<config.list.length;i++){
 		if((config.list[i].id)==($("#job-group option:selected").val())){
 			$("#my-ui-list").append(config.list[i].jobs)
@@ -406,12 +411,15 @@ $("#job-group").on('change', function() {
 	//$("#my-ui-list").append(myConfig.list[i].jobs)
 	//$("#job-icons").append(myConfig.list[i].icons)
 	//jobOrder = myConfig.list[i].order
+	save()
 
 })
 
 function save(){
 
 id=($("#job-group option:selected").val())
+
+config.selected = id
 
 for(i=0;i<config.list.length;i++){
 	if(id==config.list[i].id){
@@ -438,6 +446,8 @@ function newGroup(){
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 	defaultDisplay()
+
+	config.selected = $("#job-group option:selected").val()
 
 	config.list.push({
 		id:($("#job-group option:selected").val()),
