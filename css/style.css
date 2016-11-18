@@ -52,6 +52,12 @@ body{
 	background: #fff !important;	
 }
 
+/*.sortable-ghost { opacity: 0; }*/
+
+.sortable-fallback{
+	visibility:hidden;
+}
+
 #link{
 	/*display:none;*/
 }

@@ -293,11 +293,21 @@ function prev(){
 
 }
 
+
+document.getElementById("recent-jobs").addEventListener('dragstart', function(e) {
+	e.dataTransfer.setDragImage(document.getElementById("recent-jobs"), -99999, -99999);
+}, false);
+
+document.getElementById("my-ui-list").addEventListener('dragstart', function(e) {
+	e.dataTransfer.setDragImage(document.getElementById("my-ui-list"), -99999, -99999);
+}, false);
+
+
 function removeJob(id){
 
 	var remove = id.replace("trash", "")
 
-	console.log(remove)
+	//console.log(remove)
 
 	$("#my-ui-list").children("#" + remove).remove()
 
@@ -315,6 +325,16 @@ function removeJob(id){
 	}
 
 	save()
+
+}
+
+//TODO
+//rename job
+//rename group
+//
+
+function deleteGroup(){
+//define selected group
 
 }
 
@@ -366,8 +386,8 @@ function make(){
 	jobOrder.splice(0,1)
 	sortable.sort(jobOrder)
 	colorUpdate()
-
 	save()
+
 }
 
 $("#job-group").on('change', function() {
