@@ -60,7 +60,7 @@
 
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
-	<input type="image" id="gear" src="css/trash.png" onclick="deleteGroup()"/>
+	<input type="image" id="gear" src="css/trash.png" onclick="deleteAll()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
 
@@ -70,8 +70,7 @@
 
 //TODO
 //
-//cleanup
-//unique job list id
+//delete group selected
 //settings
 //
 
@@ -219,7 +218,7 @@ function getHistory(){
 			else{
 				defaultDisplay()
 			}
-			console.log(config)
+			//console.log(config)
 						
 		})
 
@@ -247,7 +246,7 @@ function next(){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 			if(Next==true){			
-			$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">next</a>")
+				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">next</a>")
 			}
 			else{
 				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyTotal))
@@ -338,7 +337,15 @@ function removeJob(id){
 
 function deleteGroup(){
 
-
+	console.log(config)
+	
+	for(i=0;i<config.list.length;i++){
+		if((config.list[i].id)==($("#job-group option:selected").val())){
+			
+		}
+	}
+	//$("#job-group option:selected").remove()
+	//$('#job-group').trigger("change")	
 }
 
 function deleteAll(){
@@ -394,8 +401,9 @@ function make(){
 }
 
 $("#job-group").on('change', function() {
+
+	console.log(config)
 	
-	//console.log(config)
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 
@@ -408,9 +416,7 @@ $("#job-group").on('change', function() {
 			jobOrder = config.list[i].order
 		}
 	}
-	//$("#my-ui-list").append(myConfig.list[i].jobs)
-	//$("#job-icons").append(myConfig.list[i].icons)
-	//jobOrder = myConfig.list[i].order
+
 	save()
 
 })
