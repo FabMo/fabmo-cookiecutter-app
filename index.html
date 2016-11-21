@@ -32,12 +32,12 @@
 </select>
 
 <div id="recent-jobs">
-	<li id="r0">partX</li>
+	<li id="r0">partX go to fabmo go to fabmo go to fabmo</li>
 	<li id="r1">partY</li>
 	<li id="r2">partZ</li>
 	<li id="r3">partA</li>
 	<li id="r4">partB</li>	
-	<p id="link">1 - 5 <a href="#" onclick="next()">&#8680;</a>
+	<test id="link">1 - 5 <a href="#" onclick="next()">&#8680;</a>
 </div>
 
 <div id="my-ui-list">
@@ -160,71 +160,69 @@ function getHistory(){
 
 	if(fabmo.isPresent()==true){
 
-		$("#my-ui-list").empty()
-		$("#job-icons").empty()
-	
-		for(i=0;i<recentOrder.length;i++){
-			document.getElementById(recentOrder[i]).remove();
-		}
-		document.getElementById("link").remove();
+		if(document.getElementById("addJob").value=="history"){
 
-		fabmo.getJobsInQueue(function(err,myQueue){
-			console.log(myQueue.pending)
-		})
+			$("#my-ui-list").empty()
+			$("#job-icons").empty()
+		
+			for(i=0;i<recentOrder.length;i++){
+				document.getElementById(recentOrder[i]).remove()
+			}
+			$("#recent-jobs").children('*').remove()
+		
+			fabmo.getJobHistory({start:0,count:5},function(err, myHistory) {
+				fabmoHistory = myHistory
+				console.log(fabmoHistory)
 
-		fabmo.getJobHistory({start:0,count:5},function(err, myHistory) {
-			fabmoHistory = myHistory
-			console.log(fabmoHistory)
-
-			if(fabmoHistory.data.length>0){
-				historyTotal = fabmoHistory.total_count
-				if(historyTotal>5){
-					var Next = true
+				if(fabmoHistory.data.length>0){
+					historyTotal = fabmoHistory.total_count
+					if(historyTotal>5){
+						var Next = true
+					}
+					else{
+						var Next =false
+					}
+					//console.log(historyTotal)
+					for(i=0;i<fabmoHistory.data.length;i++){
+						$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
+					}
+					if(Next==true){
+						$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\">1 - 5 <a href=\"#\" onclick=\"next()\">&#8680;</a>")
+					}
+					else{
+						$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\">1 - " + (historyTotal))
+						//update div height
+					}
+					
 				}
 				else{
-					var Next =false
+					console.log("no jobs in history")
 				}
-				//console.log(historyTotal)
-				for(i=0;i<fabmoHistory.data.length;i++){
-					$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
-				}
-				if(Next==true){
-					$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">1 - 5 <a href=\"#\" onclick=\"next()\">&#8680;</a>")
-				}
-				else{
-					$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">1 - " + (historyTotal))
-					//update div height
-				}
-
-			}
-			else{
-				console.log("no jobs in history")
-			}
-		})
-
-		fabmo.getAppConfig(function(err, myConfig) {
-			if(myConfig.list!=undefined){
-				$("#job-group").empty()
-				for(i=0;i<myConfig.list.length;i++){
-					$("#job-group").append("<option id=\"" + myConfig.list[i].id + "\"value=\""+myConfig.list[i].id+"\">"+myConfig.list[i].name+"</option>")
-					if(myConfig.selected == myConfig.list[i].id){
-						$("#job-group").val(myConfig.list[i].id)
-						$("#my-ui-list").append(myConfig.list[i].jobs)
-						$("#job-icons").append(myConfig.list[i].icons)
-						jobOrder = myConfig.list[i].order
+			})
+		
+			fabmo.getAppConfig(function(err, myConfig) {
+				if(myConfig.list!=undefined){
+					$("#job-group").empty()
+					for(i=0;i<myConfig.list.length;i++){
+						$("#job-group").append("<option id=\"" + myConfig.list[i].id + "\"value=\""+myConfig.list[i].id+"\">"+myConfig.list[i].name+"</option>")
+						if(myConfig.selected == myConfig.list[i].id){
+							$("#job-group").val(myConfig.list[i].id)
+							$("#my-ui-list").append(myConfig.list[i].jobs)
+							$("#job-icons").append(myConfig.list[i].icons)
+							jobOrder = myConfig.list[i].order
+						}
+					}
+					config=myConfig
+					if(jobOrder[0]=='default'){
+						document.getElementById("play").style.display="none"
 					}
 				}
-				config=myConfig
-				if(jobOrder[0]=='default'){
-					document.getElementById("play").style.display="none"
+				else{
+					defaultDisplay()
 				}
-			}
-			else{
-				defaultDisplay()
-			}
-			//console.log(config)
-						
-		})
+				//console.log(config)				
+			})
+		}
 
 	}
 
@@ -241,8 +239,7 @@ function next(){
 		}
 		fabmo.getJobHistory({start:(historyIndex),count:5},function(err, myHistory) {
 			fabmoHistory = myHistory
-			$("#recent-jobs").children("li").remove()
-			document.getElementById("link").remove()
+			$("#recent-jobs").children('*').remove()
 			
 			console.log(fabmoHistory)
 
@@ -250,10 +247,10 @@ function next(){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 			if(Next==true){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
+				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyTotal))
+				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyTotal))
 			}
 		})
 	}
@@ -274,24 +271,26 @@ function prev(){
 		else{
 			var Prev = false
 		}
+
 		fabmo.getJobHistory({start:(historyIndex),count:5},function(err, myHistory) {
+			//console.log(myHistory)
 			fabmoHistory = myHistory
-			$("#recent-jobs").children("li").remove()
-			document.getElementById("link").remove()
+			$("#recent-jobs").children('*').remove()
 			
 			console.log(fabmoHistory)
 			for(i=0;i<fabmoHistory.data.length;i++){
+				console.log(i)
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 
 			if((Next==true)&&(Prev==true)){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
+				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else if((Next==true)&&(Prev==false)){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">" + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
+				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\">" + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"> 1 - " + (historyTotal))
+				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"> 1 - " + (historyTotal))
 			}
 		})
 	}
@@ -374,7 +373,7 @@ function deleteAll(){
 function defaultDisplay(){
 	jobOrder=['default']
 	$("#job-icons").empty()
-	$("#my-ui-list").append("<li id=\"default\" data-id=\"default\" value=\"default\">+ add job</li>")
+	$("#my-ui-list").append("<li id=\"default\" data-id=\"default\" value=\"default\"><b>drag job here</b></li>")
 	document.getElementById("default").style.background="#ff00ff"
 	document.getElementById("play").style.display="none"
 }
@@ -383,7 +382,9 @@ function colorUpdate(){
 
 	$("li").css('background','#7777ff')
 	$("#my-ui-list").children("*").css('background','#5555ff')
+	$("#my-ui-list").children("*").css('color','#fff')
 	$("#my-ui-list").children(":first").css('background','#eeee55')
+	$("#my-ui-list").children(":first").css('color','#000')
 
 }
 
@@ -403,6 +404,23 @@ function make(){
 	save()
 
 }
+
+$("#addJob").on('change', function() {
+	
+	if(document.getElementById("addJob").value=="queue"){
+		$("#recent-jobs").children("*").remove()		
+
+		fabmo.getJobsInQueue(function(err,myQueue){
+			console.log(myQueue.pending)
+		})
+
+	}
+	else if(document.getElementById("addJob").value=="history"){
+		historyIndex+=5
+		console.log(historyIndex)
+		prev()
+	}
+})
 
 $("#job-group").on('change', function() {
 
