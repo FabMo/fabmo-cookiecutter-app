@@ -92,13 +92,14 @@ body{
 	background:#eee;
 	position:fixed;
 	top:80px;
-	width:250px;
-	height:400px;
+	width:260px;
 	left:10px;
 	font-family:arial;
 	border-radius: 30px;
 	text-align: center;
 	font-size: 18px;
+	height:420px;
+	overflow-y:auto;
 }
 
 #job-group{

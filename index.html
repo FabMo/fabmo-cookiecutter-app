@@ -270,9 +270,8 @@ function prev(){
 			fabmoHistory = myHistory
 			$("#recent-jobs").children('*').remove()
 			
-			console.log(fabmoHistory)
+			//console.log(fabmoHistory)
 			for(i=0;i<fabmoHistory.data.length;i++){
-				console.log(i)
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 
@@ -369,6 +368,8 @@ function defaultDisplay(){
 	$("#my-ui-list").append("<li id=\"default\" data-id=\"default\" value=\"default\"><b>drag job here</b></li>")
 	document.getElementById("default").style.background="#ff00ff"
 	document.getElementById("play").style.display="none"
+	//$("#default").css('border-radius','0px')
+	$("#default").css('border-style','solid')
 }
 
 function colorUpdate(){
@@ -404,7 +405,10 @@ $("#addJob").on('change', function() {
 		$("#recent-jobs").children("*").remove()		
 
 		fabmo.getJobsInQueue(function(err,myQueue){
-			console.log(myQueue.pending)
+			fabmoQueue = myQueue
+			for(i=0;i<fabmoQueue.pending.length;i++){
+				$("#recent-jobs").append("<li id=\"" + fabmoQueue.pending[i]._id + "\" data-id=\"" + fabmoQueue.pending[i]._id  +"\" value=\"r4\">" + fabmoQueue.pending[i].name + "</li>")
+			}
 		})
 
 	}
