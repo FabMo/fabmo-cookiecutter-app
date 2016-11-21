@@ -27,9 +27,8 @@
 	<option value="computer" selected>Computer</option>
 	-->
 	<option value="history" selected>History</option>
-	<!--
 	<option value="queue">Queue</option>
-	-->
+
 </select>
 
 <div id="recent-jobs">
@@ -38,7 +37,7 @@
 	<li id="r2">partZ</li>
 	<li id="r3">partA</li>
 	<li id="r4">partB</li>	
-	<p id="link">1 - 5 <a href="#" onclick="next()">next</a>
+	<p id="link">1 - 5 <a href="#" onclick="next()">&#8680;</a>
 </div>
 
 <div id="my-ui-list">
@@ -83,6 +82,7 @@ var config = {selected:'group1', list:[
 	order:(jobOrder)}
 ]}
 var fabmoHistory = []
+var fabmoQueue = []
 var historyTotal = 0
 var historyIndex = 0
 var jobOrder = [0,1,2,3,4,5,6] 
@@ -168,6 +168,10 @@ function getHistory(){
 		}
 		document.getElementById("link").remove();
 
+		fabmo.getJobsInQueue(function(err,myQueue){
+			console.log(myQueue.pending)
+		})
+
 		fabmo.getJobHistory({start:0,count:5},function(err, myHistory) {
 			fabmoHistory = myHistory
 			console.log(fabmoHistory)
@@ -185,7 +189,7 @@ function getHistory(){
 					$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 				}
 				if(Next==true){
-					$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">1 - 5 <a href=\"#\" onclick=\"next()\">next</a>")
+					$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">1 - 5 <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 				}
 				else{
 					$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">1 - " + (historyTotal))
@@ -246,10 +250,10 @@ function next(){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 			if(Next==true){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">next</a>")
+				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyTotal))
+				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyTotal))
 			}
 		})
 	}
@@ -281,10 +285,10 @@ function prev(){
 			}
 
 			if((Next==true)&&(Prev==true)){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">prev</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">next</a>")
+				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else if((Next==true)&&(Prev==false)){			
-				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">" + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">next</a>")
+				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\">" + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
 				$("#recent-jobs").append("<p id=\"link\" value=\"" + historyIndex + "\"> 1 - " + (historyTotal))
@@ -463,9 +467,7 @@ function newGroup(){
 		order:(jobOrder)
 	})
 
-	if(fabmo.isPresent()==true){
-		fabmo.setAppConfig(config)
-	}
+	fabmo.setAppConfig(config)
 
 }
 

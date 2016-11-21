@@ -122,12 +122,22 @@ select{
 	text-align-last:center; 
 }
 
-/*
-.sortable-ghost{
-	background:#ff00ff;
-}
-*/
 
+p{
+	color:#000;
+	font-size:38px;
+}
+
+a{
+	color:#3333ff;
+	font-weight: bold;
+	text-decoration: none;
+	font-size:50px;
+}
+
+a:hover{
+	color:#550055;	
+}
 
 #my-ui-list{
 	position:absolute;
