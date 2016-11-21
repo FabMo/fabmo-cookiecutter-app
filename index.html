@@ -16,19 +16,11 @@
 
 <select id="job-group">
 	<option id="group1" value="group1">Group 1</option>
-	<!--
-	<option id="group2">Group 2</option>
-	-->
 </select>
 
 <select id="addJob" autocomplete="off">
-	<!--
-	<option value="add" selected disabled>+ Add Job</option>
-	<option value="computer" selected>Computer</option>
-	-->
 	<option value="history" selected>History</option>
 	<option value="queue">Queue</option>
-
 </select>
 
 <div id="recent-jobs">
@@ -41,9 +33,6 @@
 </div>
 
 <div id="my-ui-list">
-	<!--
-	<li id="default" data-id="default" value="default">drag and drop here</li>
-	-->
 	<li id="0">part0</li>
 	<li id="1">part1</li>
 	<li id="2">part2</li>
@@ -74,6 +63,7 @@
 //
 
 var fabmo = new FabMoDashboard()
+
 var config = {selected:'group1', list:[
 	{id:($("#job-group option:selected").val()),
 	name:($("#job-group option:selected").text()),
@@ -81,8 +71,11 @@ var config = {selected:'group1', list:[
 	icons:($("#job-icons").html()),
 	order:(jobOrder)}
 ]}
+
 var fabmoHistory = []
 var fabmoQueue = []
+var queueTotal = 0
+var queueIndex = 0
 var historyTotal = 0
 var historyIndex = 0
 var jobOrder = [0,1,2,3,4,5,6] 
@@ -383,7 +376,7 @@ function colorUpdate(){
 	$("li").css('background','#7777ff')
 	$("#my-ui-list").children("*").css('background','#5555ff')
 	$("#my-ui-list").children("*").css('color','#fff')
-	$("#my-ui-list").children(":first").css('background','#eeee55')
+	$("#my-ui-list").children(":first").css('background','#00cc00')
 	$("#my-ui-list").children(":first").css('color','#000')
 
 }

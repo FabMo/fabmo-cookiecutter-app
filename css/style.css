@@ -20,6 +20,7 @@ body{
 	border-radius: 30px;
 	text-align: center;
 	font-size: 20px;
+	font-weight:bold;
 }
 
 .trash{
@@ -70,6 +71,13 @@ body{
 	top:90px;
 	height:60px;
 	width:60px;
+	border-radius:30px; 
+}
+
+#play:hover { 
+	-moz-box-shadow: 0 0 10px #ffff00; 
+	-webkit-box-shadow: 0 0 10px #ffff00; 
+	box-shadow: 0 0 10px #ffff00; 
 }
 
 #gear{
@@ -109,6 +117,7 @@ body{
 	text-align: center;
 	border-radius: 30px;
 	font-size: 20px;
+	font-weight:bold;
 }
 
 select{
@@ -149,14 +158,19 @@ a:hover{
 	font-size: 18px;
 }
 
+li:first-line{
+	color:#fff;
+}
+
 li{
 	text-align: center;
 	vertical-align: middle;
 	overflow: hidden;
 	height: 30px;
 	line-height: 30px;
+	list-style:none;
 	list-style-type: none;
-	color:#fff;
+	color:#8888ff;
 	background: #8888ff;
 	border-radius: 30px;
 	padding:15px;
@@ -164,6 +178,11 @@ li{
 }
 
 .sortable-ghost{
+	background: #55ff55 !important;
+	color:#000 !important;
+}
+
+.sortable-ghost::first-line{
 	background: #55ff55 !important;
 	color:#000 !important;
 }
