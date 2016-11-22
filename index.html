@@ -508,8 +508,7 @@ fabmo.setAppConfig(config)
 
 function newGroup(){
 
-	var makeGroup = (($('#job-group').children('option').length)+1)
-	//console.log(config)
+	var makeGroup = parseInt(config.list[config.list.length-1].id.substring(5))+1
 	
 	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"group" + makeGroup + "\">Group " + makeGroup + " </option>")
 	$("#job-group").val("group"+makeGroup)
