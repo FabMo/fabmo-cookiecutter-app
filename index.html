@@ -189,7 +189,7 @@ function getHistory(){
 					
 				}
 				else{
-					console.log("no jobs in history")
+					$("#recent-jobs").append("<p id=\"nojob\">no jobs in history</p>")
 				}
 			})
 		
@@ -284,6 +284,12 @@ function prev(){
 			else{
 				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"> 1 - " + (historyTotal))
 			}
+
+			if(fabmoHistory.data.length==0){
+				$("#recent-jobs").children('*').remove()
+				$("#recent-jobs").append("<p id=\"nojob\">no jobs in history</p>")
+			}
+
 		})
 	}
 
@@ -407,7 +413,10 @@ $("#addJob").on('change', function() {
 		fabmo.getJobsInQueue(function(err,myQueue){
 			fabmoQueue = myQueue
 			for(i=0;i<fabmoQueue.pending.length;i++){
-				$("#recent-jobs").append("<li id=\"" + fabmoQueue.pending[i]._id + "\" data-id=\"" + fabmoQueue.pending[i]._id  +"\" value=\"r4\">" + fabmoQueue.pending[i].name + "</li>")
+				$("#recent-jobs").append("<li id=\"" + fabmoQueue.pending[i]._id + "\" data-id=\"" + fabmoQueue.pending[i]._id  +"\" value=\"" + fabmoQueue.pending[i]._id + "\">" + fabmoQueue.pending[i].name + "</li>")
+			}
+			if(fabmoQueue.pending.length==0){
+				$("#recent-jobs").append("<p id=\"nojob\">no jobs in queue</p>")
 			}
 		})
 

@@ -160,7 +160,12 @@ a:hover{
 }
 
 li:first-line{
-	color:#fff;
+	/*color:#fff;*/
+}
+
+li:hover{
+	color:#000;
+	background:#55ff55 !important;
 }
 
 li{
@@ -171,7 +176,7 @@ li{
 	line-height: 30px;
 	list-style:none;
 	list-style-type: none;
-	color:#8888ff;
+	color:#fff;
 	background: #8888ff;
 	border-radius: 30px;
 	padding:15px;
