@@ -48,7 +48,7 @@
 
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
-	<input type="image" id="gear" src="css/trash.png" onclick="deleteAll()"/>
+	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 </div>
 
@@ -292,7 +292,6 @@ function prev(){
 
 		})
 	}
-
 }
 
 
@@ -336,17 +335,53 @@ function removeJob(id){
 //rename group
 //
 
+function deleteSelected(){
+
+	$("#my-ui-list").empty()
+	$("#job-icons").empty()
+
+	for(i=0;i<config.list.length;i++){
+		if((config.list[i].id)==($("#job-group option:selected").val())){
+			if(config.list[i].order!='default'){
+				config.list[i].jobs="<li id=\"default\" data-id=\"default\" value=\"default\"><b>drag job here</b></li>"
+				config.list[i].order=["default"]
+				config.list[i].icons=""
+				defaultDisplay()
+			}
+			else{				
+				if(config.list.length>1){
+					config.list.splice(i,1)
+					$("#job-group option:selected").remove()
+					if(i<config.list.length){
+						document.getElementById("job-group").value=config.list[i].id
+						$("#my-ui-list").append(config.list[i].jobs)
+						$("#job-icons").append(config.list[i].icons)
+						jobOrder = config.list[i].order
+					}
+					else{
+						document.getElementById("job-group").value=config.list[i-1].id
+						$("#my-ui-list").append(config.list[i-1].jobs)
+						$("#job-icons").append(config.list[i-1].icons)
+						jobOrder = config.list[i-1].order
+					}
+					save()					
+				}
+				else{
+					defaultDisplay()
+				}
+			}
+		}
+	}
+
+	
+	//$("#job-group option:selected").remove()
+
+}
+
 function deleteGroup(){
 
 	console.log(config)
-	
-	for(i=0;i<config.list.length;i++){
-		if((config.list[i].id)==($("#job-group option:selected").val())){
-			
-		}
-	}
-	//$("#job-group option:selected").remove()
-	//$('#job-group').trigger("change")	
+		
 }
 
 function deleteAll(){
@@ -354,6 +389,7 @@ function deleteAll(){
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 	$("#job-group").append("<option id=\"group1\" value=\"group1\">Group 1</option>")
+
 	//($("#job-group option:selected").val())='group1'
 	defaultDisplay()
 	config= {selected:'group1', list:[
@@ -376,6 +412,7 @@ function defaultDisplay(){
 	document.getElementById("play").style.display="none"
 	//$("#default").css('border-radius','0px')
 	$("#default").css('border-style','solid')
+	save()
 }
 
 function colorUpdate(){
