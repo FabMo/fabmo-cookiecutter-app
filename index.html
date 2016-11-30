@@ -58,8 +58,7 @@
 
 //TODO
 //
-//delete group selected
-//settings
+//color
 //
 
 var fabmo = new FabMoDashboard()
@@ -82,6 +81,7 @@ var jobOrder = [0,1,2,3,4,5,6]
 var recentOrder = ['r0','r1','r2','r3','r4']
 var list = document.getElementById("my-ui-list")
 var jobHistory = document.getElementById("recent-jobs")
+
 
 var sortable2 = new Sortable(jobHistory, {
 	group: {name:"group1", pull: ['clone'], put: [false] },
@@ -139,10 +139,10 @@ var sortable = new Sortable(list, {
 
 		colorUpdate()
 
-		for(i=0;i<jobOrder.length;i++){
+		for(i=0;i<jobOrder.length;i++){														
 			var top = i*70+100
 			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-			$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/gear.png\" onclick=\"\"\/\>")
+			$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
 		}
 	save()	
 	}
@@ -213,6 +213,7 @@ function getHistory(){
 				else{
 					defaultDisplay()
 				}
+				save()
 				//console.log(config)				
 			})
 		}
@@ -318,8 +319,7 @@ function removeJob(id){
 	for(i=0;i<jobOrder.length;i++){
 		var top = i*70+100
 		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-		$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/gear.png\" onclick=\"\"\/\>")
-	}
+		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")	}
 	colorUpdate()
 	if(jobOrder.length==0){
 		defaultDisplay()
@@ -331,7 +331,6 @@ function removeJob(id){
 
 //TODO
 //
-//rename job
 //rename group
 //
 
@@ -373,9 +372,6 @@ function deleteSelected(){
 		}
 	}
 
-	
-	//$("#job-group option:selected").remove()
-
 }
 
 function deleteGroup(){
@@ -390,7 +386,6 @@ function deleteAll(){
 	$("#job-icons").empty()
 	$("#job-group").append("<option id=\"group1\" value=\"group1\">Group 1</option>")
 
-	//($("#job-group option:selected").val())='group1'
 	defaultDisplay()
 	config= {selected:'group1', list:[
 		{id:'group1',
@@ -410,7 +405,6 @@ function defaultDisplay(){
 	$("#my-ui-list").append("<li id=\"default\" data-id=\"default\" value=\"default\"><b>drag job here</b></li>")
 	document.getElementById("default").style.background="#ff00ff"
 	document.getElementById("play").style.display="none"
-	//$("#default").css('border-radius','0px')
 	$("#default").css('border-style','solid')
 	save()
 }
@@ -542,6 +536,35 @@ for(i=1;i<jobOrder.length;i++){
 }
 
 getHistory()
+
+$("body").dblclick('li',function(e){
+	edit = "edit"+e.target.id
+	console.log(e)
+	document.getElementById(edit).value = document.getElementById(e.target.id).innerHTML
+	document.getElementById(edit).style.display='block'
+	document.getElementById(edit).select()
+
+	$( "#"+edit ).keyup(function(key) {
+		if(key.keyCode==13){
+			document.getElementById(edit).style.display='none'
+			$('#'+e.target.id).html(document.getElementById(edit).value)
+			save()
+		}
+	})
+
+})
+
+$("body").click('li',function(e){
+	console.log(e)
+	edit = "edit"+e.target.id
+	if(document.getElementById(edit).style.display == 'block'){
+		document.getElementById(edit).style.display='none'
+		$('#'+e.target.id).html(document.getElementById(edit).value)
+		save()
+	}
+
+})
+
 
 </script>
 
