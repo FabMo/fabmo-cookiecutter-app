@@ -50,6 +50,8 @@
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
+	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
+	<input id="renameGroup" type="text"/>
 </div>
 
 </body>
@@ -488,9 +490,10 @@ config.selected = id
 
 for(i=0;i<config.list.length;i++){
 	if(id==config.list[i].id){
+		config.list[i].name=($("#job-group option:selected").text())
 		config.list[i].jobs = ($("#my-ui-list").html())
 		config.list[i].icons = ($("#job-icons").html())
-		config.list[i].order = (jobOrder)
+		config.list[i].order = (jobOrder) 
 	}
 }
 
@@ -565,15 +568,24 @@ $("body").keyup('input',function(e){
 		console.log(e.target.id.substring(4))
 		document.getElementById(document.activeElement.id).style.display='none'
 		$('#'+e.target.id.substring(4)).html(document.getElementById(document.activeElement.id).value)
+
+		document.getElementById(document.getElementById('job-group').value).innerHTML = document.getElementById('renameGroup').value
+		document.getElementById('renameGroup').style.display = "none"
+		//config.name=document.getElementById('renameGroup').value
+		console.log(config)
+		save()
 	}
 })
 
-$("body").click('li',function(e){
+$("body").click(function(e){
 
 	for(i=0;i<jobOrder.length;i++){
+	
 		document.getElementById('edit'+jobOrder[i]).style.display='none'
 		$('#'+jobOrder[i]).html(document.getElementById('edit'+jobOrder[i]).value)
+	
 	}
+
 	save()
 	/*
 	console.log(e)
@@ -586,6 +598,15 @@ $("body").click('li',function(e){
 	*/
 })
 
+
+function renameGroup(){
+
+	document.getElementById('renameGroup').style.display = "block"
+	document.getElementById('renameGroup').value = document.getElementById(document.getElementById('job-group').value).innerHTML
+	document.getElementById('renameGroup').select()
+	
+
+}
 
 </script>
 

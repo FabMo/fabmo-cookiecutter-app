@@ -37,6 +37,27 @@ body{
 	background: #ee5555 !important;	
 }
 
+#groupSettings{
+	position:absolute;
+	height:38px;
+	width:38px;
+	right:80px;
+	top:22px;
+
+}
+
+#renameGroup{
+	display:none;
+	position:absolute;
+	height:38px;
+	width:300px;
+	right:calc(10px + (50% - 300px));
+	top:18px;
+	font-size:20px;
+	font-family:arial;
+	text-align:center;
+	font-weight:bold;
+}
 
 .gear{
 	display:none;
