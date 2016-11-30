@@ -537,6 +537,11 @@ for(i=1;i<jobOrder.length;i++){
 
 getHistory()
 
+$('#job-group').click(function(e){
+	console.log(document.getElementById('job-group').value)
+
+})
+
 $("body").dblclick('li',function(e){
 	edit = "edit"+e.target.id
 	console.log(e)
@@ -564,6 +569,13 @@ $("body").keyup('input',function(e){
 })
 
 $("body").click('li',function(e){
+
+	for(i=0;i<jobOrder.length;i++){
+		document.getElementById('edit'+jobOrder[i]).style.display='none'
+		$('#'+jobOrder[i]).html(document.getElementById('edit'+jobOrder[i]).value)
+	}
+	save()
+	/*
 	console.log(e)
 	edit = "edit"+e.target.id
 	if(document.getElementById(edit).style.display == 'block'){
@@ -571,7 +583,7 @@ $("body").click('li',function(e){
 		$('#'+e.target.id).html(document.getElementById(edit).value)
 		save()
 	}
-
+	*/
 })
 
 
