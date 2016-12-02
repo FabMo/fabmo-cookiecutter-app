@@ -9,6 +9,7 @@
 	<script src="js/libs/fabmo.min.js"></script>
 	<script src="js/libs/Sortable.min.js"></script>
 	<script src="js/libs/fabmo.min.js"></script>
+	<script src="js/libs/jscolor.min.js"></script>
 
 </head>
 
@@ -51,7 +52,7 @@
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
-	<input id="color" type="image" src="css/color.png" onclick="setColor()"/>
+	<input class="jscolor {backgroundColor:'#666'}" id="color" type="image" src="css/color.png" onchange="setColor(this.jscolor)" value="2266ff"/>
 	<input id="renameGroup" type="text"/>
 </div>
 
@@ -59,10 +60,6 @@
 
 <script>
 
-//TODO
-//
-//color
-//
 
 var fabmo = new FabMoDashboard()
 
@@ -84,7 +81,7 @@ var jobOrder = [0,1,2,3,4,5,6]
 var recentOrder = ['r0','r1','r2','r3','r4']
 var list = document.getElementById("my-ui-list")
 var jobHistory = document.getElementById("recent-jobs")
-var color = "#fff"
+var color = "#2266ff"
 
 
 var sortable2 = new Sortable(jobHistory, {
@@ -207,6 +204,8 @@ function getHistory(){
 							$("#my-ui-list").append(myConfig.list[i].jobs)
 							$("#job-icons").append(myConfig.list[i].icons)
 							jobOrder = myConfig.list[i].order
+							color=myConfig.list[i].color
+							updateColor()
 						}
 					}
 					config=myConfig
@@ -333,10 +332,6 @@ function removeJob(id){
 
 }
 
-//TODO
-//
-//rename group
-//
 
 function deleteSelected(){
 
@@ -360,13 +355,16 @@ function deleteSelected(){
 						$("#my-ui-list").append(config.list[i].jobs)
 						$("#job-icons").append(config.list[i].icons)
 						jobOrder = config.list[i].order
+						color=config.list[i].color
 					}
 					else{
 						document.getElementById("job-group").value=config.list[i-1].id
 						$("#my-ui-list").append(config.list[i-1].jobs)
 						$("#job-icons").append(config.list[i-1].icons)
 						jobOrder = config.list[i-1].order
+						color=config.list[i-1].color
 					}
+					colorUpdate()
 					save()					
 				}
 				else{
@@ -378,11 +376,6 @@ function deleteSelected(){
 
 }
 
-function deleteGroup(){
-
-	console.log(config)
-		
-}
 
 function deleteAll(){
 	$("#job-group").empty()
@@ -413,8 +406,9 @@ function defaultDisplay(){
 	save()
 }
 
-function setColor(){
-	console.log(color)
+function setColor(val){
+	color='#'+val
+	colorUpdate()
 
 }
 
@@ -480,12 +474,13 @@ $("#job-group").on('change', function() {
 
 	for(i=0;i<config.list.length;i++){
 		if((config.list[i].id)==($("#job-group option:selected").val())){
+			color=config.list[i].color
 			$("#my-ui-list").append(config.list[i].jobs)
 			$("#job-icons").append(config.list[i].icons)
 			jobOrder = config.list[i].order
 		}
 	}
-
+	colorUpdate()
 	save()
 
 })
@@ -498,6 +493,7 @@ config.selected = id
 
 for(i=0;i<config.list.length;i++){
 	if(id==config.list[i].id){
+		config.list[i].color=color
 		config.list[i].name=($("#job-group option:selected").text())
 		config.list[i].jobs = ($("#my-ui-list").html())
 		config.list[i].icons = ($("#job-icons").html())
@@ -523,8 +519,9 @@ function newGroup(){
 	defaultDisplay()
 
 	config.selected = $("#job-group option:selected").val()
-
+	
 	config.list.push({
+		color:color,	
 		id:($("#job-group option:selected").val()),
 		name:($("#job-group option:selected").text()),
 		jobs:($("#my-ui-list").html()),
