@@ -206,8 +206,9 @@ function getHistory(){
 							jobOrder = myConfig.list[i].order
 							color=myConfig.list[i].color
 							if(jobOrder[0]!='default'){
+								document.getElementById('color').jscolor.fromString(color.substring(1))
 								colorUpdate()
-							}
+							}			
 						}
 					}
 					config=myConfig
@@ -509,6 +510,7 @@ $("#job-group").on('change', function() {
 			jobOrder = config.list[i].order
 			if(jobOrder.length>1){
 				color=config.list[i].color
+				document.getElementById('color').jscolor.fromString(color.substring(1))
 				colorUpdate()	
 			}
 			else if(jobOrder[0]=='default'){
