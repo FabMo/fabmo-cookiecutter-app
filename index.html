@@ -51,6 +51,7 @@
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
+	<input id="color" type="image" src="css/color.png" onclick="setColor()"/>
 	<input id="renameGroup" type="text"/>
 </div>
 
@@ -83,6 +84,7 @@ var jobOrder = [0,1,2,3,4,5,6]
 var recentOrder = ['r0','r1','r2','r3','r4']
 var list = document.getElementById("my-ui-list")
 var jobHistory = document.getElementById("recent-jobs")
+var color = "#fff"
 
 
 var sortable2 = new Sortable(jobHistory, {
@@ -411,11 +413,17 @@ function defaultDisplay(){
 	save()
 }
 
+function setColor(){
+	console.log(color)
+
+}
+
+
 function colorUpdate(){
 
 	$("li").css('background','#7777ff')
-	$("#my-ui-list").children("*").css('background','#5555ff')
-	$("#my-ui-list").children("*").css('color','#fff')
+	$("#my-ui-list").children("*").css('background',color)
+	$("#my-ui-list").children("*").css('color','#000')
 	$("#my-ui-list").children(":first").css('background','#00cc00')
 	$("#my-ui-list").children(":first").css('color','#000')
 
@@ -547,18 +555,23 @@ $('#job-group').click(function(e){
 
 $("body").dblclick('li',function(e){
 	edit = "edit"+e.target.id
-	console.log(e)
-	document.getElementById(edit).value = document.getElementById(e.target.id).innerHTML
-	document.getElementById(edit).style.display='block'
-	document.getElementById(edit).select()
+	var target = document.getElementById(edit)
+	console.log(target)
 
-	$( "#"+edit ).keyup(function(key) {
-		if(key.keyCode==13){
-			document.getElementById(edit).style.display='none'
-			$('#'+e.target.id).html(document.getElementById(edit).value)
-			save()
-		}
-	})
+	if(target!=null){
+
+		document.getElementById(edit).value = document.getElementById(e.target.id).innerHTML
+		document.getElementById(edit).style.display='block'
+		document.getElementById(edit).select()
+
+		$( "#"+edit ).keyup(function(key) {
+			if(key.keyCode==13){
+				document.getElementById(edit).style.display='none'
+				$('#'+e.target.id).html(document.getElementById(edit).value)
+				save()
+			}
+		})
+	}	
 
 })
 
@@ -571,8 +584,6 @@ $("body").keyup('input',function(e){
 
 		document.getElementById(document.getElementById('job-group').value).innerHTML = document.getElementById('renameGroup').value
 		document.getElementById('renameGroup').style.display = "none"
-		//config.name=document.getElementById('renameGroup').value
-		console.log(config)
 		save()
 	}
 })
@@ -580,9 +591,13 @@ $("body").keyup('input',function(e){
 $("body").click(function(e){
 
 	for(i=0;i<jobOrder.length;i++){
-	
-		document.getElementById('edit'+jobOrder[i]).style.display='none'
-		$('#'+jobOrder[i]).html(document.getElementById('edit'+jobOrder[i]).value)
+
+		var target = document.getElementById('edit'+jobOrder[i])
+
+		if(target!=null){	
+			document.getElementById('edit'+jobOrder[i]).style.display='none'
+			$('#'+jobOrder[i]).html(document.getElementById('edit'+jobOrder[i]).value)
+		}
 	
 	}
 
@@ -601,10 +616,16 @@ $("body").click(function(e){
 
 function renameGroup(){
 
-	document.getElementById('renameGroup').style.display = "block"
-	document.getElementById('renameGroup').value = document.getElementById(document.getElementById('job-group').value).innerHTML
-	document.getElementById('renameGroup').select()
-	
+	if(document.getElementById('renameGroup').style.display == "none"){
+		document.getElementById('renameGroup').style.display = "block"
+		document.getElementById('renameGroup').value = document.getElementById(document.getElementById('job-group').value).innerHTML
+		document.getElementById('renameGroup').select()
+	}
+	else{
+		document.getElementById(document.getElementById('job-group').value).innerHTML = document.getElementById('renameGroup').value
+		document.getElementById('renameGroup').style.display = "none"
+		save()
+	}
 
 }
 
