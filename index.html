@@ -205,12 +205,15 @@ function getHistory(){
 							$("#job-icons").append(myConfig.list[i].icons)
 							jobOrder = myConfig.list[i].order
 							color=myConfig.list[i].color
-							updateColor()
+							if(jobOrder[0]!='default'){
+								colorUpdate()
+							}
 						}
 					}
 					config=myConfig
 					if(jobOrder[0]=='default'){
 						document.getElementById("play").style.display="none"
+						//defaultDisplay()
 					}
 				}
 				else{
@@ -415,10 +418,36 @@ function setColor(val){
 
 function colorUpdate(){
 
+	var highlight = parseInt(color.substring(1), 16);
+	var r = (highlight >> 16) & 255;
+	var g = (highlight >> 8) & 255;
+	var b = highlight & 255;
+
+	if(r<150){
+		r=r+100
+	}
+	else{
+		r=255
+	}
+	if(g<150){
+		g=g+100
+	}
+	else{
+		g=255
+	}
+	if(b<150){
+		b=b+100
+	}
+	else{
+		b=255
+	}
+
+	console.log(r + "," + g + "," + b)
+
 	$("li").css('background','#7777ff')
 	$("#my-ui-list").children("*").css('background',color)
 	$("#my-ui-list").children("*").css('color','#000')
-	$("#my-ui-list").children(":first").css('background','#00cc00')
+	$("#my-ui-list").children(":first").css('background','rgb('+ r +','+ g +','+ b +')')
 	$("#my-ui-list").children(":first").css('color','#000')
 
 }
@@ -474,13 +503,19 @@ $("#job-group").on('change', function() {
 
 	for(i=0;i<config.list.length;i++){
 		if((config.list[i].id)==($("#job-group option:selected").val())){
-			color=config.list[i].color
+			
 			$("#my-ui-list").append(config.list[i].jobs)
 			$("#job-icons").append(config.list[i].icons)
 			jobOrder = config.list[i].order
+			if(jobOrder.length>1){
+				color=config.list[i].color
+				colorUpdate()	
+			}
+			else if(jobOrder[0]=='default'){
+				//defaultDisplay()
+			}
 		}
 	}
-	colorUpdate()
 	save()
 
 })
@@ -587,6 +622,8 @@ $("body").keyup('input',function(e){
 
 $("body").click(function(e){
 
+
+	if(jobOrder!=undefined){
 	for(i=0;i<jobOrder.length;i++){
 
 		var target = document.getElementById('edit'+jobOrder[i])
@@ -599,6 +636,8 @@ $("body").click(function(e){
 	}
 
 	save()
+
+	}
 	/*
 	console.log(e)
 	edit = "edit"+e.target.id
