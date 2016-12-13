@@ -51,6 +51,7 @@
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
+	<input type="image" id="fullscreen" src="css/new.png" onclick="toggleFullScreen()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
 	<input class="jscolor {backgroundColor:'#666'}" id="color" type="image" src="css/color.png" onchange="setColor(this.jscolor)" value="2266ff"/>
 	<input id="renameGroup" type="text"/>
@@ -59,6 +60,11 @@
 </body>
 
 <script>
+
+//TODO
+//hide/show menu
+//resize #jobgroup
+//
 
 
 var fabmo = new FabMoDashboard()
@@ -667,6 +673,28 @@ function renameGroup(){
 		save()
 	}
 
+}
+
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen()
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen()
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen()
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen()
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen()
+    }
+  }
 }
 
 </script>

@@ -4,6 +4,14 @@ body{
 	font-size: 20px;
 }
 
+#fullscreen{
+	position:absolute;
+	right:10px;
+	bottom:10px;
+	width:30px;
+	height:30px;
+}
+
 #addJob{
 	-webkit-appearance: none;
 	-moz-appearance: none;
