@@ -62,9 +62,8 @@
 <script>
 
 //TODO
-//hide/show menu
-//resize #jobgroup
-//
+//cleanup fullscreen
+//show/hide add-job menu
 
 
 var fabmo = new FabMoDashboard()
@@ -695,6 +694,31 @@ function toggleFullScreen() {
       document.webkitCancelFullScreen()
     }
   }
+
+	$("#recent-jobs").toggle()
+	$("#addJob").toggle()
+	
+	if(document.getElementById("recent-jobs").style.display=='none'){
+		document.getElementById("job-group").style.width='100%'
+		document.getElementById("job-group").style.left='0px'
+		document.getElementById("my-ui-list").style.width='100%'
+		document.getElementById("my-ui-list").style.left='0px'
+		document.getElementById("gear").style.left='10px'
+		console.log(document.getElementsByClassName("trash"))
+		for(i=0;i<jobOrder.length;i++){
+			document.getElementById('trash'+jobOrder[i]).style.left="20px"
+		}
+	}
+	else{
+		document.getElementById("job-group").style.left='280px'
+		document.getElementById("job-group").style.width="calc(100% - 300px)"
+		document.getElementById("my-ui-list").style.width="calc(100% - 300px)"
+		document.getElementById("my-ui-list").style.left='280px'
+		document.getElementById("gear").style.left='300px'
+		for(i=0;i<jobOrder.length;i++){
+			document.getElementById('trash'+jobOrder[i]).style.left="300px"
+		}
+	}
 }
 
 </script>
