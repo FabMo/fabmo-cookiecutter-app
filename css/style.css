@@ -12,6 +12,14 @@ body{
 	height:30px;
 }
 
+#menu{
+	position:absolute;
+	left:20px;
+	top:30px;
+	height:30px;
+	width:30px;
+}
+
 #addJob{
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -24,6 +32,7 @@ body{
 	left:10px;
 	width:250px;
 	height:70px;
+	top:10px;
 	font-family:arial;
 	border-radius: 30px;
 	text-align: center;

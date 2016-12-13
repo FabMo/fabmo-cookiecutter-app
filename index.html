@@ -52,6 +52,7 @@
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
 	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 	<input type="image" id="fullscreen" src="css/fullscreen.png" onclick="toggleFullScreen()"/>
+	<input type="image" id="menu" src="css/menu.png" onclick="menuToggle()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
 	<input class="jscolor {backgroundColor:'#666'}" id="color" type="image" src="css/color.png" onchange="setColor(this.jscolor)" value="2266ff"/>
 	<input id="renameGroup" type="text"/>
@@ -149,6 +150,12 @@ var sortable = new Sortable(list, {
 			var top = i*70+100
 			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
 			$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
+			if(document.getElementById("recent-jobs").style.display=='none'){
+				document.getElementById('trash'+jobOrder[i]).style.left="20px"
+			}
+			else{
+				document.getElementById('trash'+jobOrder[i]).style.left="300px"
+			}	
 		}
 	save()	
 	}
@@ -701,7 +708,9 @@ function toggleFullScreen() {
       document.webkitCancelFullScreen()
     }
   }
+}
 
+function menuToggle(){
 	$("#recent-jobs").toggle()
 	$("#addJob").toggle()
 	
@@ -710,8 +719,8 @@ function toggleFullScreen() {
 		document.getElementById("job-group").style.left='0px'
 		document.getElementById("my-ui-list").style.width='100%'
 		document.getElementById("my-ui-list").style.left='0px'
-		document.getElementById("gear").style.left='10px'
-		console.log(document.getElementsByClassName("trash"))
+		document.getElementById("gear").style.left='60px'
+		document.getElementById("play").style.right='10px'
 		for(i=0;i<jobOrder.length;i++){
 			document.getElementById('trash'+jobOrder[i]).style.left="20px"
 		}
@@ -722,6 +731,7 @@ function toggleFullScreen() {
 		document.getElementById("my-ui-list").style.width="calc(100% - 300px)"
 		document.getElementById("my-ui-list").style.left='280px'
 		document.getElementById("gear").style.left='300px'
+		document.getElementById("play").style.right='30px'
 		for(i=0;i<jobOrder.length;i++){
 			document.getElementById('trash'+jobOrder[i]).style.left="300px"
 		}
