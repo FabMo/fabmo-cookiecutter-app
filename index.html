@@ -331,8 +331,15 @@ function removeJob(id){
 	for(i=0;i<jobOrder.length;i++){
 		var top = i*70+100
 		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")	}
-	colorUpdate()
+		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")	
+			if(document.getElementById("recent-jobs").style.display=='none'){
+				document.getElementById('trash'+jobOrder[i]).style.left="20px"
+			}
+			else{
+				document.getElementById('trash'+jobOrder[i]).style.left="300px"
+			}		
+		}
+		colorUpdate()
 	if(jobOrder.length==0){
 		defaultDisplay()
 	}
