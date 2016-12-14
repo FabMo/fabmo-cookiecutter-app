@@ -719,7 +719,7 @@ function menuToggle(){
 		document.getElementById("job-group").style.left='0px'
 		document.getElementById("my-ui-list").style.width='100%'
 		document.getElementById("my-ui-list").style.left='0px'
-		document.getElementById("gear").style.left='60px'
+		document.getElementById("gear").style.display='none'
 		document.getElementById("play").style.right='10px'
 		for(i=0;i<jobOrder.length;i++){
 			document.getElementById('trash'+jobOrder[i]).style.left="20px"
@@ -732,6 +732,7 @@ function menuToggle(){
 		document.getElementById("my-ui-list").style.left='280px'
 		document.getElementById("gear").style.left='300px'
 		document.getElementById("play").style.right='30px'
+		document.getElementById("gear").style.display='block'
 		for(i=0;i<jobOrder.length;i++){
 			document.getElementById('trash'+jobOrder[i]).style.left="300px"
 		}
