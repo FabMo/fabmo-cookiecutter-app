@@ -13,7 +13,7 @@
 
 </head>
 
-<body onload="">
+<body onload="load()">
 
 <select id="job-group">
 	<option id="group1" value="group1">Group 1</option>
@@ -737,6 +737,13 @@ function menuToggle(){
 			document.getElementById('trash'+jobOrder[i]).style.left="300px"
 		}
 	}
+}
+
+function load(){
+
+setTimeout("menuToggle()",3000)
+
+
 }
 
 </script>
