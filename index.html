@@ -13,7 +13,7 @@
 
 </head>
 
-<body onload="load()">
+<body id="body" onload="load()">
 
 <select id="job-group">
 	<option id="group1" value="group1">Group 1</option>
@@ -206,7 +206,8 @@ function getHistory(){
 				}
 			})
 		
-			fabmo.getAppConfig(function(err, myConfig) {
+			fabmo.getAppConfig(function(err, myConfig){
+				fabmo.hideDRO()
 				if(myConfig.list!=undefined){
 					$("#job-group").empty()
 					for(i=0;i<myConfig.list.length;i++){
@@ -222,9 +223,14 @@ function getHistory(){
 								colorUpdate()
 							}
 							for(i=0;i<jobOrder.length;i++){
-								document.getElementById('trash'+jobOrder[i]).style.left="300px"
+								id = document.getElementById('trash'+jobOrder[i])
+								if(id!=null){
+									document.getElementById('trash'+jobOrder[i]).style.left="300px"
+								}
 							}			
 						}
+
+						
 					}
 					config=myConfig
 					if(jobOrder[0]=='default'){
@@ -238,6 +244,8 @@ function getHistory(){
 				save()
 				//console.log(config)				
 			})
+
+			
 		}
 
 	}
@@ -607,8 +615,7 @@ document.getElementById('renameGroup').style.display = "none"
 getHistory()
 
 $('#job-group').click(function(e){
-	console.log(document.getElementById('job-group').value)
-
+	//console.log(document.getElementById('job-group').value)
 })
 
 $("body").dblclick('li',function(e){
@@ -621,6 +628,13 @@ $("body").dblclick('li',function(e){
 		document.getElementById(edit).value = document.getElementById(e.target.id).innerHTML
 		document.getElementById(edit).style.display='block'
 		document.getElementById(edit).select()
+
+		if(document.getElementById("recent-jobs").style.display=='none'){
+			document.getElementById(edit).style.right='calc(50% - 160px)'
+		}
+		else{
+			document.getElementById(edit).style.right='calc(50% - 300px)'
+		}
 
 		$( "#"+edit ).keyup(function(key) {
 			if(key.keyCode==13){
@@ -682,6 +696,13 @@ function renameGroup(){
 		document.getElementById('renameGroup').style.display = "block"
 		document.getElementById('renameGroup').value = document.getElementById(document.getElementById('job-group').value).innerHTML
 		document.getElementById('renameGroup').select()
+		if(document.getElementById("recent-jobs").style.display=='none'){
+			document.getElementById('renameGroup').style.right='calc(50% - 160px)'
+		}
+		else{
+			document.getElementById('renameGroup').style.right='calc(10px + (50% - 300px))'
+		}
+		
 	}
 	else{
 		document.getElementById(document.getElementById('job-group').value).innerHTML = document.getElementById('renameGroup').value
@@ -693,27 +714,34 @@ function renameGroup(){
 
 
 function toggleFullScreen() {
-  if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen()
-    } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen()
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
-    }
-  } else {
-    if (document.cancelFullScreen) {
-      document.cancelFullScreen()
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen()
-    } else if (document.webkitCancelFullScreen) {
-      document.webkitCancelFullScreen()
-    }
-  }
+
+	if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement){
+		if(document.documentElement.requestFullscreen){
+			document.documentElement.requestFullscreen()
+		} 
+		else if (document.documentElement.mozRequestFullScreen) {
+			document.documentElement.mozRequestFullScreen()
+		} 
+		else if (document.documentElement.webkitRequestFullscreen) {
+			document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+		}
+	} 
+	else{
+		if (document.cancelFullScreen) {
+			document.cancelFullScreen()
+		} 
+		else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen()
+		} 
+		else if (document.webkitCancelFullScreen) {
+			document.webkitCancelFullScreen()
+		}
+	}
+	
 }
 
 function menuToggle(){
+
 	$("#recent-jobs").toggle()
 	$("#addJob").toggle()
 	
@@ -743,10 +771,10 @@ function menuToggle(){
 }
 
 function load(){
+	//fabmo.notify('info','')
+	//fabmo.setBusyMessage('loading...')
 
-	setTimeout("menuToggle()",3000)
-
-
+	//setTimeout("menuToggle()",2000)
 }
 
 </script>
