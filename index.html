@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en"> 
+<html lang="en">
 <head>
 	<title>Cookie Cutter</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"/>
@@ -28,7 +28,7 @@
 	<li id="r1">partY</li>
 	<li id="r2">partZ</li>
 	<li id="r3">partA</li>
-	<li id="r4">partB</li>	
+	<li id="r4">partB</li>
 	<test id="link">1 - 5 <a href="#" onclick="next()">&#8680;</a>
 </div>
 
@@ -81,7 +81,7 @@ var queueTotal = 0
 var queueIndex = 0
 var historyTotal = 0
 var historyIndex = 0
-var jobOrder = [0,1,2,3,4,5,6] 
+var jobOrder = [0,1,2,3,4,5,6]
 var recentOrder = ['r0','r1','r2','r3','r4']
 var list = document.getElementById("my-ui-list")
 var jobHistory = document.getElementById("recent-jobs")
@@ -118,7 +118,7 @@ var sortable = new Sortable(list, {
 	onEnd: function(e){
 		//console.log(e)
 		//console.log(e.oldIndex)
-		//console.log(e.newIndex)  
+		//console.log(e.newIndex)
 	},
 	onAdd: function(e){
 		//var itemEl = e.item;  // dragged HTMLElement
@@ -128,14 +128,14 @@ var sortable = new Sortable(list, {
 	},
 	onSort: function(e){
 		//console.log(e)
-		
+
 		jobOrder=sortable.toArray()
 		console.log(jobOrder)
 
 		for(i=0;i<jobOrder.length;i++){
 			if(jobOrder[i]=='default'){
 				document.getElementById("default").remove()
-				jobOrder.splice(i,1)		
+				jobOrder.splice(i,1)
 			}
 		}
 		//console.log(jobOrder)
@@ -144,7 +144,7 @@ var sortable = new Sortable(list, {
 
 		colorUpdate()
 
-		for(i=0;i<jobOrder.length;i++){														
+		for(i=0;i<jobOrder.length;i++){
 			var top = i*70+100
 			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
 			$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
@@ -153,9 +153,9 @@ var sortable = new Sortable(list, {
 			}
 			// else{
 			// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
-			// }	
+			// }
 		}
-	save()	
+	save()
 	}
 
 })
@@ -169,12 +169,12 @@ function getHistory(){
 
 			$("#my-ui-list").empty()
 			$("#job-icons").empty()
-		
+
 			for(i=0;i<recentOrder.length;i++){
 				document.getElementById(recentOrder[i]).remove()
 			}
 			$("#recent-jobs").children('*').remove()
-		
+
 			fabmo.getJobHistory({start:0,count:5},function(err, myHistory) {
 				fabmoHistory = myHistory
 				console.log(fabmoHistory)
@@ -198,13 +198,13 @@ function getHistory(){
 						$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\">1 - " + (historyTotal))
 						//update div height
 					}
-					
+
 				}
 				else{
 					$("#recent-jobs").append("<p id=\"nojob\">no jobs in history</p>")
 				}
 			})
-		
+
 			fabmo.getAppConfig(function(err, myConfig){
 				if (myConfig.fullscreen){
 					menuToggle();
@@ -228,10 +228,10 @@ function getHistory(){
 								// if(id!=null){
 								// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
 								// }
-							}			
+							}
 						}
 
-						
+
 					}
 					config=myConfig
 					if(jobOrder[0]=='default'){
@@ -243,10 +243,10 @@ function getHistory(){
 					defaultDisplay()
 				}
 				save()
-				//console.log(config)				
+				//console.log(config)
 			})
 
-			
+
 		}
 
 	}
@@ -265,13 +265,13 @@ function next(){
 		fabmo.getJobHistory({start:(historyIndex),count:5},function(err, myHistory) {
 			fabmoHistory = myHistory
 			$("#recent-jobs").children('*').remove()
-			
+
 			console.log(fabmoHistory)
 
 			for(i=0;i<fabmoHistory.data.length;i++){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
-			if(Next==true){			
+			if(Next==true){
 				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
@@ -301,16 +301,16 @@ function prev(){
 			//console.log(myHistory)
 			fabmoHistory = myHistory
 			$("#recent-jobs").children('*').remove()
-			
+
 			//console.log(fabmoHistory)
 			for(i=0;i<fabmoHistory.data.length;i++){
 				$("#recent-jobs").append("<li id=\"" + fabmoHistory.data[i]._id + "\" data-id=\"" + fabmoHistory.data[i]._id +"\" value=\"r4\">" + fabmoHistory.data[i].name + "</li>")
 			}
 
-			if((Next==true)&&(Prev==true)){			
+			if((Next==true)&&(Prev==true)){
 				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\"><a href=\"#\" onclick=\"prev()\">&#8678;</a> " + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
-			else if((Next==true)&&(Prev==false)){			
+			else if((Next==true)&&(Prev==false)){
 				$("#recent-jobs").append("<test id=\"link\" value=\"" + historyIndex + "\">" + (historyIndex+1) + " - " + (historyIndex+5) + " <a href=\"#\" onclick=\"next()\">&#8680;</a>")
 			}
 			else{
@@ -350,13 +350,13 @@ function removeJob(id){
 	for(i=0;i<jobOrder.length;i++){
 		var top = i*70+100
 		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")	
+		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
 			if(document.getElementById("recent-jobs").style.display=='none'){
 				document.getElementById('trash'+jobOrder[i]).style.left="20px"
 			}
 			else{
 				document.getElementById('trash'+jobOrder[i]).style.left="300px"
-			}		
+			}
 		}
 		colorUpdate()
 	if(jobOrder.length==0){
@@ -381,7 +381,7 @@ function deleteSelected(){
 				config.list[i].icons=""
 				defaultDisplay()
 			}
-			else{				
+			else{
 				if(config.list.length>1){
 					config.list.splice(i,1)
 					$("#job-group option:selected").remove()
@@ -400,7 +400,7 @@ function deleteSelected(){
 						color=config.list[i-1].color
 					}
 					colorUpdate()
-					save()					
+					save()
 				}
 				else{
 					defaultDisplay()
@@ -426,8 +426,8 @@ function deleteAll(){
 		icons:($("#job-icons").html()),
 		order:(jobOrder)}
 	]}
-	
-	
+
+
 	save()
 }
 
@@ -446,6 +446,13 @@ function setColor(val){
 
 }
 
+function getContrastColor(r,g,b)
+{
+	if ((r*0.299 + g*0.587 + b*0.114) > 186) {
+		return "#000";
+	}
+	return "#fff"
+}
 
 function colorUpdate(){
 
@@ -473,11 +480,9 @@ function colorUpdate(){
 		b=255
 	}
 
-	console.log(r + "," + g + "," + b)
-
-	
 	$("#my-ui-list").children("*").css('background',color)
-	$("#my-ui-list").children("*").css('color','#000')
+	$("#my-ui-list").children("*").css('color',getContrastColor(r,g,b))
+
 	// $("#my-ui-list").children(":first").css('background','rgb('+ r +','+ g +','+ b +')')
 	// $("#my-ui-list").children(":first").css('color','#000')
 
@@ -492,7 +497,7 @@ function make(el){
 		if (err){
 			cosole.info(err);
 		} else {
-			fabmo.resubmitJob(makeId, {stayHere : true}, function(err, result) { 
+			fabmo.resubmitJob(makeId, {stayHere : true}, function(err, result) {
 				if (err){
 					console.info(err);
 				} else {
@@ -504,16 +509,16 @@ function make(el){
 						}
            			});
 				}
-				
+
 			});
 		}
 	});
 }
 
 // $("#addJob").on('change', function() {
-	
+
 // 	if(document.getElementById("addJob").value=="queue"){
-// 		$("#recent-jobs").children("*").remove()		
+// 		$("#recent-jobs").children("*").remove()
 
 // 		fabmo.getJobsInQueue(function(err,myQueue){
 // 			fabmoQueue = myQueue
@@ -536,7 +541,7 @@ function make(el){
 $("#job-group").on('change', function() {
 
 	console.log(config)
-	
+
 	$("#my-ui-list").empty()
 	$("#job-icons").empty()
 
@@ -544,14 +549,14 @@ $("#job-group").on('change', function() {
 
 	for(i=0;i<config.list.length;i++){
 		if((config.list[i].id)==($("#job-group option:selected").val())){
-			
+
 			$("#my-ui-list").append(config.list[i].jobs)
 			$("#job-icons").append(config.list[i].icons)
 			jobOrder = config.list[i].order
 			if(jobOrder.length>1){
 				color=config.list[i].color
 				document.getElementById('color').jscolor.fromString(color.substring(1))
-				colorUpdate()	
+				colorUpdate()
 			}
 			else if(jobOrder[0]=='default'){
 				//defaultDisplay()
@@ -574,7 +579,7 @@ for(i=0;i<config.list.length;i++){
 		config.list[i].name=($("#job-group option:selected").text())
 		config.list[i].jobs = ($("#my-ui-list").html())
 		config.list[i].icons = ($("#job-icons").html())
-		config.list[i].order = (jobOrder) 
+		config.list[i].order = (jobOrder)
 	}
 }
 config.fullscreen = fullscreen;
@@ -588,7 +593,7 @@ fabmo.setAppConfig(config)
 function newGroup(){
 
 	var makeGroup = parseInt(config.list[config.list.length-1].id.substring(5))+1
-	
+
 	$("#job-group").append("<option id=\"group" + makeGroup + "\" value=\"group" + makeGroup + "\">Group " + makeGroup + " </option>")
 	$("#job-group").val("group"+makeGroup)
 
@@ -597,9 +602,9 @@ function newGroup(){
 	defaultDisplay()
 
 	config.selected = $("#job-group option:selected").val()
-	
+
 	config.list.push({
-		color:color,	
+		color:color,
 		id:($("#job-group option:selected").val()),
 		name:($("#job-group option:selected").text()),
 		jobs:($("#my-ui-list").html()),
@@ -658,7 +663,7 @@ $("body").dblclick('li',function(e){
 				save()
 			}
 		})
-	}	
+	}
 
 })
 
@@ -683,11 +688,11 @@ $("body").click(function(e){
 
 		var target = document.getElementById('edit'+jobOrder[i])
 
-		if(target!=null){	
+		if(target!=null){
 			document.getElementById('edit'+jobOrder[i]).style.display='none'
 			$('#'+jobOrder[i]).html(document.getElementById('edit'+jobOrder[i]).value)
 		}
-	
+
 	}
 
 	save()
@@ -717,7 +722,7 @@ function renameGroup(){
 		else{
 			document.getElementById('renameGroup').style.right='calc(10px + (50% - 300px))'
 		}
-		
+
 	}
 	else{
 		document.getElementById(document.getElementById('job-group').value).innerHTML = document.getElementById('renameGroup').value
@@ -733,33 +738,33 @@ function toggleFullScreen() {
 	if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement){
 		if(document.documentElement.requestFullscreen){
 			document.documentElement.requestFullscreen()
-		} 
+		}
 		else if (document.documentElement.mozRequestFullScreen) {
 			document.documentElement.mozRequestFullScreen()
-		} 
+		}
 		else if (document.documentElement.webkitRequestFullscreen) {
 			document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
 		}
-	} 
+	}
 	else{
 		if (document.cancelFullScreen) {
 			document.cancelFullScreen()
-		} 
+		}
 		else if (document.mozCancelFullScreen) {
 			document.mozCancelFullScreen()
-		} 
+		}
 		else if (document.webkitCancelFullScreen) {
 			document.webkitCancelFullScreen()
 		}
 	}
-	
+
 }
 
 function menuToggle(){
 
 	$("#recent-jobs").toggle()
 	$("#addJob").toggle()
-	
+
 	if(document.getElementById("recent-jobs").style.display=='none'){
 		fullscreen = true;
 		document.getElementById("job-group").style.width='100%'
@@ -786,7 +791,7 @@ function menuToggle(){
 		// for(i=0;i<jobOrder.length;i++){
 		// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
 		// }
-		
+
 	}
 	save();
 }
@@ -802,4 +807,3 @@ function load(){
 
 
 </html>
-
