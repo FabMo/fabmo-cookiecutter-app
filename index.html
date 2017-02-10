@@ -6,9 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"/>
 	<link href="css/style.css" rel="stylesheet">
 	<script src="js/libs/jquery-1.11.2.min.js"></script>
-	<script src="js/libs/fabmo.min.js"></script>
 	<script src="js/libs/Sortable.min.js"></script>
-	<script src="js/libs/fabmo.min.js"></script>
+	<script src="js/libs/fabmo.js"></script>
 	<script src="js/libs/jscolor.min.js"></script>
 
 </head>
@@ -21,7 +20,7 @@
 
 <select id="addJob" autocomplete="off">
 	<option value="history" selected>History</option>
-	<option value="queue">Queue</option>
+	<!--<option value="queue">Queue</option>-->
 </select>
 
 <div id="recent-jobs">
@@ -50,7 +49,6 @@
 <div id="icons">
 	<input type="image" id="new" src="css/new.png" onclick="newGroup()"/>
 	<input type="image" id="gear" src="css/trash.png" onclick="deleteSelected()"/>
-	<input type="image" id="play" src="css/play_icon.png" onclick="make()"/>
 	<input type="image" id="fullscreen" src="css/fullscreen.png" onclick="toggleFullScreen()"/>
 	<input type="image" id="menu" src="css/menu.png" onclick="menuToggle()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
@@ -88,6 +86,7 @@ var recentOrder = ['r0','r1','r2','r3','r4']
 var list = document.getElementById("my-ui-list")
 var jobHistory = document.getElementById("recent-jobs")
 var color = "#2266ff"
+var fullscreen = false;
 
 
 var sortable2 = new Sortable(jobHistory, {
@@ -136,8 +135,7 @@ var sortable = new Sortable(list, {
 		for(i=0;i<jobOrder.length;i++){
 			if(jobOrder[i]=='default'){
 				document.getElementById("default").remove()
-				jobOrder.splice(i,1)
-				document.getElementById("play").style.display="block"			
+				jobOrder.splice(i,1)		
 			}
 		}
 		//console.log(jobOrder)
@@ -153,9 +151,9 @@ var sortable = new Sortable(list, {
 			if(document.getElementById("recent-jobs").style.display=='none'){
 				document.getElementById('trash'+jobOrder[i]).style.left="20px"
 			}
-			else{
-				document.getElementById('trash'+jobOrder[i]).style.left="300px"
-			}	
+			// else{
+			// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
+			// }	
 		}
 	save()	
 	}
@@ -208,6 +206,9 @@ function getHistory(){
 			})
 		
 			fabmo.getAppConfig(function(err, myConfig){
+				if (myConfig.fullscreen){
+					menuToggle();
+				}
 				if(myConfig.list!=undefined){
 					$("#job-group").empty()
 					for(i=0;i<myConfig.list.length;i++){
@@ -224,9 +225,9 @@ function getHistory(){
 							}
 							for(i=0;i<jobOrder.length;i++){
 								id = document.getElementById('trash'+jobOrder[i])
-								if(id!=null){
-									document.getElementById('trash'+jobOrder[i]).style.left="300px"
-								}
+								// if(id!=null){
+								// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
+								// }
 							}			
 						}
 
@@ -234,7 +235,7 @@ function getHistory(){
 					}
 					config=myConfig
 					if(jobOrder[0]=='default'){
-						document.getElementById("play").style.display="none"
+						// document.getElementById("play").style.display="none"
 						//defaultDisplay()
 					}
 				}
@@ -434,8 +435,7 @@ function defaultDisplay(){
 	jobOrder=['default']
 	$("#job-icons").empty()
 	$("#my-ui-list").append("<li id=\"default\" data-id=\"default\" value=\"default\"><b>drag job here</b></li>")
-	document.getElementById("default").style.background="#ff00ff"
-	document.getElementById("play").style.display="none"
+	document.getElementById("default").style.background="#003459"
 	$("#default").css('border-style','solid')
 	save()
 }
@@ -475,53 +475,63 @@ function colorUpdate(){
 
 	console.log(r + "," + g + "," + b)
 
-	$("li").css('background','#7777ff')
+	
 	$("#my-ui-list").children("*").css('background',color)
 	$("#my-ui-list").children("*").css('color','#000')
-	$("#my-ui-list").children(":first").css('background','rgb('+ r +','+ g +','+ b +')')
-	$("#my-ui-list").children(":first").css('color','#000')
+	// $("#my-ui-list").children(":first").css('background','rgb('+ r +','+ g +','+ b +')')
+	// $("#my-ui-list").children(":first").css('color','#000')
 
 }
 
 
-function make(){
-
+function make(el){
+	console.log(el);
 	//fabmo.runGCode("g0x0")
-
-	var makeId = jobOrder[0].substring(7)
-
-	fabmo.resubmitJob(makeId)
-
-	jobOrder.push(jobOrder[0])
-	jobOrder.splice(0,1)
-	sortable.sort(jobOrder)
-	colorUpdate()
-	save()
-
+	makeId = el.dataset.id;
+	fabmo.clearJobQueue(function(err,data){
+		if (err){
+			cosole.info(err);
+		} else {
+			fabmo.resubmitJob(makeId, {stayHere : true}, function(err, result) { 
+				if (err){
+					console.info(err);
+				} else {
+					fabmo.runNext(function(err, data) {
+						if (err) {
+							console.info(err);
+						} else {
+							console.info('running');
+						}
+           			});
+				}
+				
+			});
+		}
+	});
 }
 
-$("#addJob").on('change', function() {
+// $("#addJob").on('change', function() {
 	
-	if(document.getElementById("addJob").value=="queue"){
-		$("#recent-jobs").children("*").remove()		
+// 	if(document.getElementById("addJob").value=="queue"){
+// 		$("#recent-jobs").children("*").remove()		
 
-		fabmo.getJobsInQueue(function(err,myQueue){
-			fabmoQueue = myQueue
-			for(i=0;i<fabmoQueue.pending.length;i++){
-				$("#recent-jobs").append("<li id=\"" + fabmoQueue.pending[i]._id + "\" data-id=\"" + fabmoQueue.pending[i]._id  +"\" value=\"" + fabmoQueue.pending[i]._id + "\">" + fabmoQueue.pending[i].name + "</li>")
-			}
-			if(fabmoQueue.pending.length==0){
-				$("#recent-jobs").append("<p id=\"nojob\">no jobs in queue</p>")
-			}
-		})
+// 		fabmo.getJobsInQueue(function(err,myQueue){
+// 			fabmoQueue = myQueue
+// 			for(i=0;i<fabmoQueue.pending.length;i++){
+// 				$("#recent-jobs").append("<li id=\"" + fabmoQueue.pending[i]._id + "\" data-id=\"" + fabmoQueue.pending[i]._id  +"\" value=\"" + fabmoQueue.pending[i]._id + "\">" + fabmoQueue.pending[i].name + "</li>")
+// 			}
+// 			if(fabmoQueue.pending.length==0){
+// 				$("#recent-jobs").append("<p id=\"nojob\">no jobs in queue</p>")
+// 			}
+// 		})
 
-	}
-	else if(document.getElementById("addJob").value=="history"){
-		historyIndex+=5
-		console.log(historyIndex)
-		prev()
-	}
-})
+// 	}
+// 	else if(document.getElementById("addJob").value=="history"){
+// 		historyIndex+=5
+// 		console.log(historyIndex)
+// 		prev()
+// 	}
+// })
 
 $("#job-group").on('change', function() {
 
@@ -567,6 +577,7 @@ for(i=0;i<config.list.length;i++){
 		config.list[i].order = (jobOrder) 
 	}
 }
+config.fullscreen = fullscreen;
 
 
 fabmo.setAppConfig(config)
@@ -616,6 +627,10 @@ getHistory()
 
 $('#job-group').click(function(e){
 	//console.log(document.getElementById('job-group').value)
+})
+
+$('#my-ui-list').click('li', function(e){
+	make(e.target);
 })
 
 $("body").dblclick('li',function(e){
@@ -746,28 +761,34 @@ function menuToggle(){
 	$("#addJob").toggle()
 	
 	if(document.getElementById("recent-jobs").style.display=='none'){
+		fullscreen = true;
 		document.getElementById("job-group").style.width='100%'
 		document.getElementById("job-group").style.left='0px'
 		document.getElementById("my-ui-list").style.width='100%'
 		document.getElementById("my-ui-list").style.left='0px'
 		document.getElementById("gear").style.display='none'
-		document.getElementById("play").style.right='10px'
-		for(i=0;i<jobOrder.length;i++){
-			document.getElementById('trash'+jobOrder[i]).style.left="20px"
-		}
+		// document.getElementById("play").style.right='10px'
+		$('.trash').css('left', '20px');
+		// for(i=0;i<jobOrder.length;i++){
+		// 	document.getElementById('trash'+jobOrder[i]).style.left="20px"
+		// }
 	}
 	else{
+		fullscreen = false;
 		document.getElementById("job-group").style.left='280px'
 		document.getElementById("job-group").style.width="calc(100% - 300px)"
 		document.getElementById("my-ui-list").style.width="calc(100% - 300px)"
 		document.getElementById("my-ui-list").style.left='280px'
 		document.getElementById("gear").style.left='300px'
-		document.getElementById("play").style.right='30px'
+		// document.getElementById("play").style.right='30px'
 		document.getElementById("gear").style.display='block'
-		for(i=0;i<jobOrder.length;i++){
-			document.getElementById('trash'+jobOrder[i]).style.left="300px"
-		}
+		$('.trash').css('left', '300px');
+		// for(i=0;i<jobOrder.length;i++){
+		// 	document.getElementById('trash'+jobOrder[i]).style.left="300px"
+		// }
+		
 	}
+	save();
 }
 
 function load(){
