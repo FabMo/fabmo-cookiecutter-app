@@ -66,7 +66,7 @@ body{
 }
 
 .trash:hover{
-	background: #F06543 !important;	
+	background: #F06543 !important;
 }
 
 #groupSettings{
@@ -103,7 +103,7 @@ body{
 }
 
 .gear:hover{
-	background: #fff !important;	
+	background: #fff !important;
 }
 
 .sortable-fallback{
@@ -124,13 +124,13 @@ body{
 	top:90px;
 	height:60px;
 	width:60px;
-	border-radius:50%; 
+	border-radius:50%;
 }
 
-#play:hover { 
-	-moz-box-shadow: 0 0 10px #ffff00; 
-	-webkit-box-shadow: 0 0 10px #ffff00; 
-	box-shadow: 0 0 10px #ffff00; 
+#play:hover {
+	-moz-box-shadow: 0 0 10px #ffff00;
+	-webkit-box-shadow: 0 0 10px #ffff00;
+	box-shadow: 0 0 10px #ffff00;
 }*/
 
 #gear{
@@ -148,6 +148,7 @@ body{
 	height:26px;
 	width:26px;
 	border-radius: 5px;
+	padding: 3px;
 }
 
 #recent-jobs:fullscreen{
@@ -188,7 +189,7 @@ body{
 }
 
 select{
-	text-align-last:center; 
+	text-align-last:center;
 }
 
 test{
@@ -209,7 +210,7 @@ a{
 }
 
 a:hover{
-	color:#003459;	
+	color:#003459;
 }
 
 
@@ -254,7 +255,7 @@ li{
 	border-radius: 5px;
 	padding:15px;
 	margin:10px;
-	border: 1px solid #eee;	
+	border: 1px solid #eee;
 }
 
 
@@ -294,7 +295,5 @@ li{
 	border-radius: 5px;
 	padding:15px;
 	margin:10px;
-	margin:10px;	
+	margin:10px;
 }
-
-

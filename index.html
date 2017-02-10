@@ -52,7 +52,7 @@
 	<input type="image" id="fullscreen" src="css/fullscreen.png" onclick="toggleFullScreen()"/>
 	<input type="image" id="menu" src="css/menu.png" onclick="menuToggle()"/>
 	<input id="groupSettings" type="image" src="css/gear.png" onclick="renameGroup()"/>
-	<input class="jscolor {backgroundColor:'#666'}" id="color" type="image" src="css/color.png" onchange="setColor(this.jscolor)" value="2266ff"/>
+	<input class="jscolor {backgroundColor:'#666'}" id="color" type="image" src="css/color-white.png" onchange="setColor(this.jscolor)" value="2266ff"/>
 	<input id="renameGroup" type="text"/>
 </div>
 
@@ -64,6 +64,7 @@
 //cleanup fullscreen
 //show/hide add-job menu
 
+var ICON_OFFSET = 73;
 
 var fabmo = new FabMoDashboard()
 
@@ -145,7 +146,7 @@ var sortable = new Sortable(list, {
 		colorUpdate()
 
 		for(i=0;i<jobOrder.length;i++){
-			var top = i*70+100
+			var top = i*ICON_OFFSET+100
 			$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
 			$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
 			if(document.getElementById("recent-jobs").style.display=='none'){
@@ -348,7 +349,7 @@ function removeJob(id){
 	jobOrder=sortable.toArray()
 
 	for(i=0;i<jobOrder.length;i++){
-		var top = i*70+100
+		var top = i*ICON_OFFSET+100
 		$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + jobOrder[i] + "\" style=\"top:" + top + "px\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
 		$("#job-icons").append("<input class=\"edit\" type=\"text\" id=\"edit" + jobOrder[i] + "\" value=\"" + (document.getElementById(jobOrder[i]).innerHTML) +"\"style=\"top:" + (top-12) + "px\" \/\>")
 			if(document.getElementById("recent-jobs").style.display=='none'){
@@ -442,16 +443,16 @@ function defaultDisplay(){
 
 function setColor(val){
 	color='#'+val
+	$('#color').css('color', '#000000ff');
 	colorUpdate()
-
 }
 
-function getContrastColor(r,g,b)
+function shouldUseBlackOverlay(r,g,b)
 {
 	if ((r*0.299 + g*0.587 + b*0.114) > 186) {
-		return "#000";
+		return true;
 	}
-	return "#fff"
+	return false;
 }
 
 function colorUpdate(){
@@ -481,10 +482,8 @@ function colorUpdate(){
 	}
 
 	$("#my-ui-list").children("*").css('background',color)
-	$("#my-ui-list").children("*").css('color',getContrastColor(r,g,b))
-
-	// $("#my-ui-list").children(":first").css('background','rgb('+ r +','+ g +','+ b +')')
-	// $("#my-ui-list").children(":first").css('color','#000')
+	$("#my-ui-list").children("*").css('color',shouldUseBlackOverlay(r,g,b) ? '#000' : '#fff')
+	$("#color").attr('src',shouldUseBlackOverlay(r,g,b) ? 'css/color.png' : 'css/color-white.png')
 
 }
 
@@ -620,10 +619,10 @@ function newGroup(){
 
 for(i=1;i<jobOrder.length;i++){
 	$("#job-icons").append("<input class=\"trash\" type=\"image\" id=\"trash" + i + "\" src=\"css/trash.png\" onclick=\"removeJob(this.id)\"\/\>")
-	document.getElementById("trash"+i).style.top = i*70 + 100 + "px"
+	document.getElementById("trash"+i).style.top = i*72 + 100 + "px"
 
 	$("#job-icons").append("<input class=\"gear\" type=\"image\" id=\"gear" + i + "\" src=\"css/gear.png\" onclick=\"\"\/\>")
-	document.getElementById("gear"+i).style.top = i*70 + 100 + "px"
+	document.getElementById("gear"+i).style.top = i*ICON_OFFSET + 100 + "px"
 }
 
 document.getElementById('renameGroup').style.display = "none"
@@ -799,7 +798,6 @@ function menuToggle(){
 function load(){
 	//fabmo.notify('info','')
 	//fabmo.setBusyMessage('loading...')
-
 	//setTimeout("menuToggle()",2000)
 }
 
